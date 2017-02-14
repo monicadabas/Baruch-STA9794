@@ -2,6 +2,7 @@ import datetime
 
 # Q1. When will all the bitcoins be mined
 
+
 def Q1():
     total = 0 # number of bitcoins mined
     n = 0 # number of times reward is halved
@@ -14,22 +15,28 @@ def Q1():
 
     while not(total >= bitcoins):
         bitcoins_added = round(reward*(1/(2**(n))) * 21 * (10**4), 8)
-        print(bitcoins_added)
+        # print(bitcoins_added)
         if bitcoins_added >= 21 * (10**(-4)):
             total += bitcoins_added
             n += 1
         else:
             break
-        print("total: {}, n: {}".format(total,n))
+        # print("total: {}, n: {}".format(total,n))
 
     total_minutes = n * 21 * 10**5 # minutes required to mine all blocks
-    print(total, n, total_minutes)
+    # print(total, n, total_minutes)
 
     past_time = datetime.datetime(2009, month = 1, day = 3, hour = 18, minute = 15, second = 5)
 
     t = past_time + datetime.timedelta(minutes = total_minutes)
-    print(t, t.year)
+    print("All bitcoins will be mined by {}".format(t))
+    print("All bitcoins will be mined by year {}.".format(t.year))
 
 Q1()
+
+# Output
+# All bitcoins will be mined by 2140-10-08 18:15:05
+# All bitcoins will be mined by year 2140.
+
 
 
