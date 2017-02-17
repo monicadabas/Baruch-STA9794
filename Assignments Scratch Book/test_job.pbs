@@ -9,12 +9,12 @@
 \pard\pardeftab720\sl279\partightenfactor0
 
 \f0\fs25\fsmilli12700 \cf2 \cb3 \expnd0\expndtw0\kerning0
-\outl0\strokewidth0 \strokec2 #!/bin/bash\
+#!/bin/bash\
 #\
 # Typical job script to run a serial job in the production queue\
 #\
 #PBS -q production\
-#PBS -N \cf4 \strokec5 test\cf2 \strokec2 \
+#PBS -N \cf4 test\cf2 \
 #PBS -l select=1:ncpus=1\
 #PBS -l place=free\
 #PBS -V\
@@ -23,12 +23,12 @@
 cd $PBS_O_WORKDIR\
 \
 # Run my serial job\
-\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural\partightenfactor0
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardeftab720\pardirnatural\partightenfactor0
 
-\f1\fs22 \cf6 \cb7 \kerning1\expnd0\expndtw0 \CocoaLigature0 \outl0\strokewidth0 /scratch/monica.dabas/test/test.py
+\f1\fs22 \cf6 \cb7 \kerning1\expnd0\expndtw0 \CocoaLigature0 /scratch/monica.dabas/test/test.py
 \f0\fs25\fsmilli12700 \cf2 \cb3 \expnd0\expndtw0\kerning0
-\CocoaLigature1 \outl0\strokewidth0 \strokec2  > 
-\f1\fs22 \cf6 \cb7 \kerning1\expnd0\expndtw0 \CocoaLigature0 \outl0\strokewidth0 /scratch/monica.dabas/test/test_output.txt
+\CocoaLigature1  
+\f1\fs22 \cf6 \cb7 \kerning1\expnd0\expndtw0 \CocoaLigature0 /scratch/monica.dabas/test/test_output.txt
 \f0\fs25\fsmilli12700 \cf2 \cb3 \expnd0\expndtw0\kerning0
-\CocoaLigature1 \outl0\strokewidth0 \strokec2  2>&1\
+\CocoaLigature1 \
 }
