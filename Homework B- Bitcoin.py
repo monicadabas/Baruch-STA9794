@@ -1,3 +1,4 @@
+from __future__ import division
 import datetime
 
 # Q1. When will all the bitcoins be mined
