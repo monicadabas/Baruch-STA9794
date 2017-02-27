@@ -10,6 +10,73 @@ class Block:
         self.start = start
         self.end = end
 
+
+# function to return timestamp string to datetime format or returns false if not in right format
+def date_parse(s):
+    t = s.split(".")
+    t = str(":".join(t))
+    try:
+        return pd.datetime.strptime(t, '%Y%m%d:%H:%M:%S:%f')
+    except ValueError:
+        return "Error"
+
+#
+class Ticks:
+    def __init__(self, timestamp, price, units, index):
+        self. timestamp = timestamp
+        self.price = price
+        self.units = units
+        self.index = index
+
+    # checks if the object has all values in right format, if not returns False, else returns True
+    def check_format(self):
+        if date_parse(self.timestamp) == "Error":
+            return False
+
+        try:
+            self.price = float(self.price)
+            self.units = int(self.units)
+
+        except ValueError:
+            return False
+
+        if self.price <= 0 or self.units <= 0:
+            return False
+
+        return True
+
+# data parser to convert list of characters read by MPI file into list of Ticks class objects
+def parser(chunker,):
+
+
+
+#identify noise and signal and write them in separate files
+def identify_noise(file, block, count):
+    print("File format is : {}".format(type(file)))
+    #file.Seek(block.start)
+    #with open(file, 'r') as file:
+    file.Seek(block.start)
+    current_chunk_end = block.start
+    while count > 0:
+        file.Seek(current_chunk_end)
+        block_size = block.end - block.start + 1
+        buffer_size = min(10000, block_size)
+        buffer = np.empty(buffer_size)
+        chunker = file.Read([buffer, buffer_size])
+        data, row_count, chunk_end = parser(chunker)
+        current_chunk_end += chunk_end
+        count -= row_count
+
+        noise = []
+        for obj in data:
+            if not obj.check_format():
+                noise.append(obj.index)
+                #write this obj into noise else do the rest of the checks relative to other rows
+
+
+
+
+
 # return number of ticks or rows in each block (each node processes one block)
 def get_line_count(fh,block):
     buffer_size = block.end + 1 - block.start
@@ -24,25 +91,6 @@ def get_line_count(fh,block):
             count += 1
 
     return count
-
-
-#identify noise and signal and write them in separate files
-def identify_noise(file, block, count):
-    print("File format is : {}".format(type(file)))
-    #file.Seek(block.start)
-    #with open(file, 'r') as file:
-    file.Seek(block.start)
-    while count > 0:
-        buffer_size = min(10, count)
-        chunker = file.Readlines(chunksize=buffer_size)
-        count -= buffer_size
-        print("Length of chunker: {}, Count: {}".format(len(chunker), count))
-
-        #lines = [line for line in file][:count]
-
-
-
-
 
 
 def adjust_blocks(fh,block,rank, nprocs):
@@ -102,13 +150,14 @@ def main(argv):
     rank = comm.Get_rank()
     nprocs = comm.Get_size()
     fh = MPI.File.Open(comm, argv)
-    error = fh.Set_errhandler(MPI.ERRORS_RETURN)
     file_size = fh.Get_size()
     block_size = int(file_size/nprocs)
-    #print("Error: {}".format(error))
 
+    if file_size < nprocs:
+        print("Insufficient data in file")
+        MPI.Finalize()
 
-    # divide file into blocks for each process (same length)
+    # divide file into nominal blocks for each process (same length)
     block_start = rank * block_size
 
     if not(rank == nprocs-1):
@@ -117,17 +166,14 @@ def main(argv):
         block_end = file_size
 
     block = Block(block_start,block_end)
-
     print("Process {}: Block: [{}, {}]".format(rank,block.start,block.end))
-
     block, count = adjust_blocks(fh,block,rank, nprocs)
-
     identify_noise(fh,block,count)
 
 
 if __name__ == "__main__":
     if len(sys.argv) != 2:
-        print("Insufficient arguments provided")
+        print("Incorrect number of arguments provided")
         sys.exit(0)
     else:
         main(sys.argv[1])
