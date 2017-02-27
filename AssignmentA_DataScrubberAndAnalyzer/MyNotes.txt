@@ -1,0 +1,23 @@
+Facts about the data:
+
+1. Each row has 3 datapoints: Timestamp, Price, Units Traded
+2. Timestamp is in format YYYYMMDD:HH:MM:SS.SSSSSS (seconds as float to capture microsecond)
+3. Price is float
+4. Units Traded is integer
+5. Price and Units can be zero or negative
+6. Timestamps:  -can be duplicate
+				-not in order
+				-difference between two consecutive timestamps can be as large as possible
+7. Data is a stream of network data packets
+
+Facts about network latency:
+
+1. Network latency is in milliseconds
+2. Latency should not exceed more than 2-3 seconds considering the packet travels the largest distance
+
+Check points:
+
+1. All three items in a row should be in right format
+2. The Price and Units Traded should not be zero or negative and should be within 2 standard deviations from mean
+3. Rows with duplicate timestamps should be removed as those are unreliable and we have no mechanism to check which one is real data
+4. Two consecutive rows should have timestamps within 3 seconds range
