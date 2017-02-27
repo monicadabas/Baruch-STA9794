@@ -1,57 +1,89 @@
 from mpi4py import MPI
+import numpy as np
 import sys
 import os
+
 
 class Block:
     def __init__(self, start, end):
         self.start = start
         self.end = end
 
+
+def get_line_count(fh,block):
+    buffer_size = block.end + 1 - block.start
+    buffer = np.empty(buffer_size, dtype=str)
+
+    count = 0
+    fh.Seek(block.start)
+    fh.Read([buffer, MPI.CHAR])
+
+    for i in range(buffer_size):
+        if buffer[i] == "\n":
+            count += 1
+
+    return count
+
+
+def adjust_blocks(fh,block,rank, nprocs):
+    buffer_size = 100
+    buffer = np.empty(buffer_size, dtype=str)
+
+    # adjust the block start
+    if not(rank == 0):
+        fh.Seek(block.start)
+        fh.Read([buffer, MPI.CHAR])
+        #print("Process: {}, Start buffer: {}".format(rank,buffer))
+
+        for i in range(buffer_size):
+            if buffer[i] == "\n":
+                block.start += i + 1
+                break
+
+    # adjust the block end
+    if not(rank == nprocs-1):
+        fh.Seek(block.end)
+        fh.Read([buffer, MPI.CHAR])
+        #print("Process: {}, End buffer: {}".format(rank,buffer))
+
+        for i in range(buffer_size):
+            if buffer[i] == "\n":
+                block.end += i
+                break
+
+    print("Process: {}, Adjusted block: [{}, {}]".format(rank,block.start,block.end))
+
+    count = get_line_count(fh,block)
+    print("Process: {}, Line Count: {}".format(rank,count))
+
+
 def main(argv):
 
-        file_size = os.path.getsize(argv)
-        #MPI.Status = status
-        #MPI.File = fh
-        #MPI.Offset = filesize, blocksize, block_start, block_end
+    comm = MPI.COMM_WORLD
+    rank = comm.Get_rank()
+    nprocs = comm.Get_size()
+    fh = MPI.File.Open(comm, argv)
+    file_size = fh.Get_size()
+    block_size = int(file_size/nprocs)
 
-        buffer = 100
-        blocks = []
-        comm = MPI.COMM_WORLD
-        rank = comm.Get_rank()
-        nprocs = comm.Get_size()
-        block_size = int(file_size/nprocs)
-        fh = MPI.File.Open(comm, argv)
+    # divide file into blocks for each process (same length)
+    block_start = rank * block_size
 
-        for i in range(nprocs):
-            if not(i == 0):
-                start = i * block_size
-            else:
-                start = 0
-            if not(i == nprocs-1):
-                end = start + block_size - 1
-            else:
-                end = file_size
+    if not(rank == nprocs-1):
+        block_end = block_start + block_size - 1
+    else:
+        block_end = file_size
 
-            block = Block(start,end)
-            blocks.append(block)
+    block = Block(block_start,block_end)
 
-        for i in range(nprocs-1):
-            value_at_end_index = fh.seek[blocks[i].end]
-            if value_at_end_index != "/n":
-                data = fh.read(buffer)
-                for index in range(buffer):
-                    if data[index] == "\n":
-                        blocks[i].end += index
-                        blocks[i+1].start = blocks[i].end + 1
+    print("Process {}: Block: [{}, {}]".format(rank,block.start,block.end))
 
-        for i in range(len(blocks)):
-            print("Block: {}".format(i))
-            print("Block start: {}".format(blocks[i].start))
-            print("Block end: {}".format(blocks[i].end))
+    adjust_blocks(fh,block,rank, nprocs)
+
 
 if __name__ == "__main__":
-    if len(sys.argv) != 1:
+    if len(sys.argv) != 2:
         print("Insufficient arguments provided")
         sys.exit(0)
     else:
-        main(argv[1])
+        main(sys.argv[1])
