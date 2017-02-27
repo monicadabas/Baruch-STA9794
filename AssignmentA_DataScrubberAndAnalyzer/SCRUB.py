@@ -9,7 +9,7 @@ class Block:
         self.start = start
         self.end = end
 
-
+# change this function to get noise and signal files
 def get_line_count(fh,block):
     buffer_size = block.end + 1 - block.start
     buffer = np.empty(buffer_size, dtype=str)
