@@ -23,6 +23,7 @@ Check points:
 4. Two consecutive rows should have timestamps within 3 seconds range
 
 Process:
+SCRUB
 Sequential Step 1: 3 Steps will run in parallel in this step
     Step 1: Divide file into nominal blocks
     Step 2: Adjust block start and end to get the final blocks to be processed by each node
@@ -33,5 +34,17 @@ Sequential Step 2: Once each node provides the line count, root node will calcul
 
 Sequential Step 3: Root node will send the index to each node and then they will start further processing
 
-Sequential Step 4: Each node processes their block as follows
-    Step 1: 
+Sequential Step 4: Information with each node: Block start and end, file, index of the first row in block
+Each node processes their block as follows
+    Step 1: Parse data in chunks of size 10000 (about 200 rows) and create objects of class Ticks with 3 features as in file and index
+    Step 2: For each chunk check the format. If incorrect format, write index to noise
+    Step 3: Check for network latency, relative price and unit using standard deviation (price and unit should be within 2 std deviations)
+    Step 4: The ticks that get past all checks will be signals so sort them in order of timestamp and add them to signal
+
+
+NORMAL
+Step 1: Divide signal in blocks
+Step 2: Read each block iteratively in chunks
+Step 3: Plot histogram with X axis range [-150, 150]
+Step 4: Compute return for each row and add it to histogram
+Step 5: Check histogram for normality by computing curse stats
