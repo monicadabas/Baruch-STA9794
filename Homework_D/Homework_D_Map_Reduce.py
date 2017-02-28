@@ -13,11 +13,12 @@ def Map(L):
     results = []
     for w in L:
         # True if w contains non-alphanumeric characters
-        if w.isalnum():
+        w = sanitize(w)
+        if w.isalpha():
             results.append((w, 1))
         # True if w is a title-cased token
-        if w.istitle():
-            results.append((w, 1))
+        #if w.istitle():
+        #    results.append((w, 1))
 
     return results
  
@@ -82,14 +83,14 @@ A generator function for chopping up a given list into chunks of
 length n.
 """
 def chunks(l, n):
-    for i in xrange(0, len(l), n):
+    for i in range(0, len(l), n):
         yield l[i:i+n]
 
 
 """
 Sort tuples by term frequency, and then alphabetically.
 """
-def tuple_sort (a, b):
+def tuple_sort(a, b):
     if a[1] < b[1]:
       return 1
     elif a[1] > b[1]:
@@ -125,5 +126,5 @@ if __name__ == '__main__':
     # Sort the term frequencies in nonincreasing order
     term_frequencies.sort(tuple_sort)
 
-    for pair in term_frequencies[:20]:
+    for pair in term_frequencies:
         print pair[0], "+", pair[1]
