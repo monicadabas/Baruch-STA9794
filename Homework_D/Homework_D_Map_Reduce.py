@@ -63,7 +63,8 @@ def sanitize(w):
     while len(w) > 0 and not w[-1].isalnum():
         w = w[:-1]
 
-    return w
+    #return w
+    return w.title() # with this all words like "The", "THE", "the" will be considered as one word represented as "The"
 """
 Load the contents the file at the given
 path into a big string and return it.
