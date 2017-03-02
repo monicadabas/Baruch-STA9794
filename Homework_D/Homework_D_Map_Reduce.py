@@ -4,7 +4,7 @@ from multiprocessing import Pool
 
 """
 Given a list of tokens, return a list of tuples of
-titlecased (or proper noun) tokens and a count of '1'.
+tokens (changed to title cased) and a count of '1'.
 Also remove any leading or trailing punctuation from
 each token.
 """
@@ -17,7 +17,7 @@ def Map(L):
         if w.isalpha():
             results.append((w, 1))
         # True if w is a title-cased token
-        #if w.istitle():
+        # if w.istitle():
         #    results.append((w, 1))
 
     return results
@@ -128,4 +128,4 @@ if __name__ == '__main__':
     term_frequencies.sort(tuple_sort)
 
     for pair in term_frequencies:
-        print(pair[0], "+", pair[1])
+        print("{} + {}".format(pair[0],pair[1]))
