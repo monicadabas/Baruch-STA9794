@@ -103,7 +103,7 @@ def tuple_sort(a, b):
 if __name__ == '__main__':
 
     if len(sys.argv) != 2:
-      print "Program requires path to file for reading!"
+      print("Program requires path to file for reading!")
       sys.exit(1)
 
     # Load file, stuff it into a string
@@ -128,4 +128,4 @@ if __name__ == '__main__':
     term_frequencies.sort(tuple_sort)
 
     for pair in term_frequencies:
-        print pair[0], "+", pair[1]
+        print(pair[0], "+", pair[1])
