@@ -130,7 +130,7 @@ def identify_noise(file, block, first_index, count):
                     data.append(Ticks(tick_list[0],tick_list[1],tick_list[2],current_line_index))
                 current_line_index += 1
 
-            data = sorted(data, key=attrgetter("timestamp"))
+            #data = sorted(data, key=attrgetter("timestamp"))
 
             # for tick in data:
             #     is_valid_result = isvalid(tick,t)
@@ -140,22 +140,35 @@ def identify_noise(file, block, first_index, count):
             #     else:
             #         t = is_valid_result.timestamp
 
+            counts = Counter()
+            for i in data:
+                if i.timestamp in counts:
+                    counts[i.timestamp] += 1
+                else:
+                    counts[i.timestamp] = 1
+
+            for i in data:
+                if counts[i.timestamp] > 1:
+                    del i
+
             for i in range(len(data)):
                 if t == date_parse("00010101:00:00:00.000000"):
                     for j in range(i,len(data)-1):
                         if t == date_parse("00010101:00:00:00.000000"):
                             if abs(data[j].timestamp-data[j+1].timestamp).total_seconds() <= 3:
                                 t = data[j].timestamp
-                                logging.info("timestamp: {}, index: {}".format(t,data[j].index))
+                                logging.info("Initial t was t0 and now it is: {} taken from index: {}".format(t,data[j].index))
                                 break
 
                 is_valid_result, reason = isvalid(data[i],t)
 
                 if not is_valid_result.bool:
-                    logging.info("Index: {}, Reason: {}, Time: {}".format(data[i].index, reason,t))
+                    #logging.info("Index: {}, Reason: {}, Time: {}".format(data[i].index, reason,t))
                     noise.write(str(data[i].index)+"\n")
                 else:
+                    logging.info("Till now t was: {}".format(t))
                     t = is_valid_result.timestamp
+                    logging.info("t is now: {} at index {}".format(t,data[i].index))
 
 
 
