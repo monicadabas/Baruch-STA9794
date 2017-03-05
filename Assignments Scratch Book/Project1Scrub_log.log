@@ -591,7 +591,7 @@ INFO:root:Row number: 589
 INFO:root:Row number: 590
 INFO:root:Row number: 591
 INFO:root:Initial condition of datatypes and range not met
-INFO:root:Unit and Datatype: -208506, <class 'numpy.int64'>
+INFO:root:Unit and Datatype: -208506, <type 'numpy.int64'>
 INFO:root:Length: True
 INFO:root:Is Price float: True
 INFO:root:Is price greater than 0: True
@@ -766,7 +766,7 @@ INFO:root:Row number: 756
 INFO:root:Row number: 757
 INFO:root:Row number: 758
 INFO:root:Initial condition of datatypes and range not met
-INFO:root:Unit and Datatype: 535734, <class 'numpy.int64'>
+INFO:root:Unit and Datatype: 535734, <type 'numpy.int64'>
 INFO:root:Length: True
 INFO:root:Is Price float: True
 INFO:root:Is price greater than 0: False
@@ -874,7 +874,7 @@ INFO:root:Row number: 856
 INFO:root:Row number: 857
 INFO:root:Row number: 858
 INFO:root:Timestamp is more than 3 seconds earlier
-INFO:root:Unit and Datatype: 409123, <class 'numpy.int64'>
+INFO:root:Unit and Datatype: 409123, <type 'numpy.int64'>
 INFO:root:Length: True
 INFO:root:Is Price float: True
 INFO:root:Is price greater than 0: True
@@ -1435,7 +1435,7 @@ INFO:root:Row number: 1409
 INFO:root:Row number: 1410
 INFO:root:Row number: 1411
 INFO:root:Timestamp is more than 3 seconds earlier
-INFO:root:Unit and Datatype: 412705, <class 'numpy.int64'>
+INFO:root:Unit and Datatype: 412705, <type 'numpy.int64'>
 INFO:root:Length: True
 INFO:root:Is Price float: True
 INFO:root:Is price greater than 0: True
@@ -1919,7 +1919,7 @@ INFO:root:Row number: 1885
 INFO:root:Row number: 1886
 INFO:root:Row number: 1887
 INFO:root:Timestamp is more than 3 seconds earlier
-INFO:root:Unit and Datatype: 170451, <class 'numpy.int64'>
+INFO:root:Unit and Datatype: 170451, <type 'numpy.int64'>
 INFO:root:Length: True
 INFO:root:Is Price float: True
 INFO:root:Is price greater than 0: True
@@ -2798,7 +2798,7 @@ INFO:root:Row number: 2756
 INFO:root:Row number: 2757
 INFO:root:Row number: 2758
 INFO:root:Initial condition of datatypes and range not met
-INFO:root:Unit and Datatype: 538117, <class 'numpy.int64'>
+INFO:root:Unit and Datatype: 538117, <type 'numpy.int64'>
 INFO:root:Length: True
 INFO:root:Is Price float: True
 INFO:root:Is price greater than 0: False
@@ -2934,7 +2934,7 @@ INFO:root:Row number: 2884
 INFO:root:Row number: 2885
 INFO:root:Row number: 2886
 INFO:root:Initial condition of datatypes and range not met
-INFO:root:Unit and Datatype: -587649, <class 'numpy.int64'>
+INFO:root:Unit and Datatype: -587649, <type 'numpy.int64'>
 INFO:root:Length: True
 INFO:root:Is Price float: True
 INFO:root:Is price greater than 0: True
@@ -3130,7 +3130,7 @@ INFO:root:Row number: 3072
 INFO:root:Row number: 3073
 INFO:root:Row number: 3074
 INFO:root:Initial condition of datatypes and range not met
-INFO:root:Unit and Datatype: 454803, <class 'numpy.int64'>
+INFO:root:Unit and Datatype: 454803, <type 'numpy.int64'>
 INFO:root:Length: True
 INFO:root:Is Price float: True
 INFO:root:Is price greater than 0: False
@@ -3661,7 +3661,7 @@ INFO:root:Row number: 3595
 INFO:root:Row number: 3596
 INFO:root:Row number: 3597
 INFO:root:Timestamp is more than 3 seconds earlier
-INFO:root:Unit and Datatype: 83671, <class 'numpy.int64'>
+INFO:root:Unit and Datatype: 83671, <type 'numpy.int64'>
 INFO:root:Length: True
 INFO:root:Is Price float: True
 INFO:root:Is price greater than 0: True
@@ -3755,7 +3755,7 @@ INFO:root:Row number: 3681
 INFO:root:Row number: 3682
 INFO:root:Row number: 3683
 INFO:root:Initial condition of datatypes and range not met
-INFO:root:Unit and Datatype: 703313, <class 'numpy.int64'>
+INFO:root:Unit and Datatype: 703313, <type 'numpy.int64'>
 INFO:root:Length: True
 INFO:root:Is Price float: True
 INFO:root:Is price greater than 0: False
@@ -4157,7 +4157,7 @@ INFO:root:Row number: 4075
 INFO:root:Row number: 4076
 INFO:root:Row number: 4077
 INFO:root:Initial condition of datatypes and range not met
-INFO:root:Unit and Datatype: 295839, <class 'numpy.int64'>
+INFO:root:Unit and Datatype: 295839, <type 'numpy.int64'>
 INFO:root:Length: True
 INFO:root:Is Price float: True
 INFO:root:Is price greater than 0: False
@@ -4313,7 +4313,7 @@ INFO:root:Row number: 4223
 INFO:root:Row number: 4224
 INFO:root:Row number: 4225
 INFO:root:Initial condition of datatypes and range not met
-INFO:root:Unit and Datatype: 440312, <class 'numpy.int64'>
+INFO:root:Unit and Datatype: 440312, <type 'numpy.int64'>
 INFO:root:Length: True
 INFO:root:Is Price float: True
 INFO:root:Is price greater than 0: False
@@ -4369,7 +4369,7 @@ INFO:root:Row number: 4271
 INFO:root:Row number: 4272
 INFO:root:Row number: 4273
 INFO:root:Initial condition of datatypes and range not met
-INFO:root:Unit and Datatype: 10426, <class 'numpy.int64'>
+INFO:root:Unit and Datatype: 10426, <type 'numpy.int64'>
 INFO:root:Length: True
 INFO:root:Is Price float: True
 INFO:root:Is price greater than 0: False
@@ -5040,7 +5040,7 @@ INFO:root:Row number: 4934
 INFO:root:Row number: 4935
 INFO:root:Row number: 4936
 INFO:root:Initial condition of datatypes and range not met
-INFO:root:Unit and Datatype: 467775, <class 'numpy.int64'>
+INFO:root:Unit and Datatype: 467775, <type 'numpy.int64'>
 INFO:root:Length: True
 INFO:root:Is Price float: True
 INFO:root:Is price greater than 0: False
@@ -8938,7 +8938,7 @@ INFO:root:Row number: 8824
 INFO:root:Row number: 8825
 INFO:root:Row number: 8826
 INFO:root:Initial condition of datatypes and range not met
-INFO:root:Unit and Datatype: -451295, <class 'numpy.int64'>
+INFO:root:Unit and Datatype: -451295, <type 'numpy.int64'>
 INFO:root:Length: True
 INFO:root:Is Price float: True
 INFO:root:Is price greater than 0: True
@@ -9664,7 +9664,7 @@ INFO:root:Row number: 9542
 INFO:root:Row number: 9543
 INFO:root:Row number: 9544
 INFO:root:Initial condition of datatypes and range not met
-INFO:root:Unit and Datatype: 37704, <class 'numpy.int64'>
+INFO:root:Unit and Datatype: 37704, <type 'numpy.int64'>
 INFO:root:Length: True
 INFO:root:Is Price float: True
 INFO:root:Is price greater than 0: False
@@ -9713,7 +9713,7 @@ INFO:root:Row number: 9583
 INFO:root:Row number: 9584
 INFO:root:Row number: 9585
 INFO:root:Initial condition of datatypes and range not met
-INFO:root:Unit and Datatype: -704006, <class 'numpy.int64'>
+INFO:root:Unit and Datatype: -704006, <type 'numpy.int64'>
 INFO:root:Length: True
 INFO:root:Is Price float: True
 INFO:root:Is price greater than 0: True
@@ -10248,7 +10248,7 @@ INFO:root:Row number: 10110
 INFO:root:Row number: 10111
 INFO:root:Row number: 10112
 INFO:root:Timestamps is more than 3 seconds than earlier timestamp
-INFO:root:Unit and Datatype: 548961, <class 'numpy.int64'>
+INFO:root:Unit and Datatype: 548961, <type 'numpy.int64'>
 INFO:root:Length: True
 INFO:root:Is Price float: True
 INFO:root:Is price greater than 0: True
@@ -11310,7 +11310,7 @@ INFO:root:Row number: 11164
 INFO:root:Row number: 11165
 INFO:root:Row number: 11166
 INFO:root:Timestamps is more than 3 seconds than earlier timestamp
-INFO:root:Unit and Datatype: 129770, <class 'numpy.int64'>
+INFO:root:Unit and Datatype: 129770, <type 'numpy.int64'>
 INFO:root:Length: True
 INFO:root:Is Price float: True
 INFO:root:Is price greater than 0: True
@@ -11513,7 +11513,7 @@ INFO:root:Row number: 11359
 INFO:root:Row number: 11360
 INFO:root:Row number: 11361
 INFO:root:Timestamp is more than 3 seconds earlier
-INFO:root:Unit and Datatype: 10105, <class 'numpy.int64'>
+INFO:root:Unit and Datatype: 10105, <type 'numpy.int64'>
 INFO:root:Length: True
 INFO:root:Is Price float: True
 INFO:root:Is price greater than 0: True
@@ -12106,7 +12106,7 @@ INFO:root:Row number: 11944
 INFO:root:Row number: 11945
 INFO:root:Row number: 11946
 INFO:root:Timestamp is more than 3 seconds earlier
-INFO:root:Unit and Datatype: 11467, <class 'numpy.int64'>
+INFO:root:Unit and Datatype: 11467, <type 'numpy.int64'>
 INFO:root:Length: True
 INFO:root:Is Price float: True
 INFO:root:Is price greater than 0: True
@@ -12872,7 +12872,7 @@ INFO:root:Row number: 12702
 INFO:root:Row number: 12703
 INFO:root:Row number: 12704
 INFO:root:Initial condition of datatypes and range not met
-INFO:root:Unit and Datatype: 25252, <class 'numpy.int64'>
+INFO:root:Unit and Datatype: 25252, <type 'numpy.int64'>
 INFO:root:Length: True
 INFO:root:Is Price float: True
 INFO:root:Is price greater than 0: False
@@ -13025,7 +13025,7 @@ INFO:root:Row number: 12847
 INFO:root:Row number: 12848
 INFO:root:Row number: 12849
 INFO:root:Initial condition of datatypes and range not met
-INFO:root:Unit and Datatype: 745893, <class 'numpy.int64'>
+INFO:root:Unit and Datatype: 745893, <type 'numpy.int64'>
 INFO:root:Length: True
 INFO:root:Is Price float: True
 INFO:root:Is price greater than 0: False
@@ -13887,7 +13887,7 @@ INFO:root:Row number: 13701
 INFO:root:Row number: 13702
 INFO:root:Row number: 13703
 INFO:root:Timestamp is more than 3 seconds earlier
-INFO:root:Unit and Datatype: 484626, <class 'numpy.int64'>
+INFO:root:Unit and Datatype: 484626, <type 'numpy.int64'>
 INFO:root:Length: True
 INFO:root:Is Price float: True
 INFO:root:Is price greater than 0: True
@@ -14495,7 +14495,7 @@ INFO:root:Row number: 14301
 INFO:root:Row number: 14302
 INFO:root:Row number: 14303
 INFO:root:Timestamp is more than 3 seconds earlier
-INFO:root:Unit and Datatype: 60810, <class 'numpy.int64'>
+INFO:root:Unit and Datatype: 60810, <type 'numpy.int64'>
 INFO:root:Length: True
 INFO:root:Is Price float: True
 INFO:root:Is price greater than 0: True
@@ -14729,7 +14729,7 @@ INFO:root:Row number: 14527
 INFO:root:Row number: 14528
 INFO:root:Row number: 14529
 INFO:root:Timestamp is more than 3 seconds earlier
-INFO:root:Unit and Datatype: 115278, <class 'numpy.int64'>
+INFO:root:Unit and Datatype: 115278, <type 'numpy.int64'>
 INFO:root:Length: True
 INFO:root:Is Price float: True
 INFO:root:Is price greater than 0: True
@@ -16930,7 +16930,7 @@ INFO:root:Row number: 16720
 INFO:root:Row number: 16721
 INFO:root:Row number: 16722
 INFO:root:Initial condition of datatypes and range not met
-INFO:root:Unit and Datatype: 707855, <class 'numpy.int64'>
+INFO:root:Unit and Datatype: 707855, <type 'numpy.int64'>
 INFO:root:Length: True
 INFO:root:Is Price float: True
 INFO:root:Is price greater than 0: False
@@ -17768,7 +17768,7 @@ INFO:root:Row number: 17550
 INFO:root:Row number: 17551
 INFO:root:Row number: 17552
 INFO:root:Timestamp is more than 3 seconds earlier
-INFO:root:Unit and Datatype: 689691, <class 'numpy.int64'>
+INFO:root:Unit and Datatype: 689691, <type 'numpy.int64'>
 INFO:root:Length: True
 INFO:root:Is Price float: True
 INFO:root:Is price greater than 0: True
@@ -17998,7 +17998,7 @@ INFO:root:Row number: 17772
 INFO:root:Row number: 17773
 INFO:root:Row number: 17774
 INFO:root:Initial condition of datatypes and range not met
-INFO:root:Unit and Datatype: 446591, <class 'numpy.int64'>
+INFO:root:Unit and Datatype: 446591, <type 'numpy.int64'>
 INFO:root:Length: True
 INFO:root:Is Price float: True
 INFO:root:Is price greater than 0: False
@@ -18373,7 +18373,7 @@ INFO:root:Row number: 18139
 INFO:root:Row number: 18140
 INFO:root:Row number: 18141
 INFO:root:Initial condition of datatypes and range not met
-INFO:root:Unit and Datatype: 171155, <class 'numpy.int64'>
+INFO:root:Unit and Datatype: 171155, <type 'numpy.int64'>
 INFO:root:Length: True
 INFO:root:Is Price float: True
 INFO:root:Is price greater than 0: False
@@ -19001,7 +19001,7 @@ INFO:root:Row number: 18759
 INFO:root:Row number: 18760
 INFO:root:Row number: 18761
 INFO:root:Timestamps is more than 3 seconds than earlier timestamp
-INFO:root:Unit and Datatype: 404453, <class 'numpy.int64'>
+INFO:root:Unit and Datatype: 404453, <type 'numpy.int64'>
 INFO:root:Length: True
 INFO:root:Is Price float: True
 INFO:root:Is price greater than 0: True
@@ -20353,7 +20353,7 @@ INFO:root:Row number: 20103
 INFO:root:Row number: 20104
 INFO:root:Row number: 20105
 INFO:root:Initial condition of datatypes and range not met
-INFO:root:Unit and Datatype: 420502, <class 'numpy.int64'>
+INFO:root:Unit and Datatype: 420502, <type 'numpy.int64'>
 INFO:root:Length: True
 INFO:root:Is Price float: True
 INFO:root:Is price greater than 0: False
@@ -21420,7 +21420,7 @@ INFO:root:Row number: 21162
 INFO:root:Row number: 21163
 INFO:root:Row number: 21164
 INFO:root:Initial condition of datatypes and range not met
-INFO:root:Unit and Datatype: 654373, <class 'numpy.int64'>
+INFO:root:Unit and Datatype: 654373, <type 'numpy.int64'>
 INFO:root:Length: True
 INFO:root:Is Price float: True
 INFO:root:Is price greater than 0: False
@@ -21759,7 +21759,7 @@ INFO:root:Row number: 21493
 INFO:root:Row number: 21494
 INFO:root:Row number: 21495
 INFO:root:Initial condition of datatypes and range not met
-INFO:root:Unit and Datatype: 378033, <class 'numpy.int64'>
+INFO:root:Unit and Datatype: 378033, <type 'numpy.int64'>
 INFO:root:Length: True
 INFO:root:Is Price float: True
 INFO:root:Is price greater than 0: False
@@ -21974,7 +21974,7 @@ INFO:root:Row number: 21700
 INFO:root:Row number: 21701
 INFO:root:Row number: 21702
 INFO:root:Initial condition of datatypes and range not met
-INFO:root:Unit and Datatype: -265416, <class 'numpy.int64'>
+INFO:root:Unit and Datatype: -265416, <type 'numpy.int64'>
 INFO:root:Length: True
 INFO:root:Is Price float: True
 INFO:root:Is price greater than 0: True
@@ -22065,7 +22065,7 @@ INFO:root:Row number: 21783
 INFO:root:Row number: 21784
 INFO:root:Row number: 21785
 INFO:root:Initial condition of datatypes and range not met
-INFO:root:Unit and Datatype: 93101, <class 'numpy.int64'>
+INFO:root:Unit and Datatype: 93101, <type 'numpy.int64'>
 INFO:root:Length: True
 INFO:root:Is Price float: True
 INFO:root:Is price greater than 0: False
@@ -22194,7 +22194,7 @@ INFO:root:Row number: 21904
 INFO:root:Row number: 21905
 INFO:root:Row number: 21906
 INFO:root:Timestamp is more than 3 seconds earlier
-INFO:root:Unit and Datatype: 37239, <class 'numpy.int64'>
+INFO:root:Unit and Datatype: 37239, <type 'numpy.int64'>
 INFO:root:Length: True
 INFO:root:Is Price float: True
 INFO:root:Is price greater than 0: True
@@ -22363,7 +22363,7 @@ INFO:root:Row number: 22065
 INFO:root:Row number: 22066
 INFO:root:Row number: 22067
 INFO:root:Initial condition of datatypes and range not met
-INFO:root:Unit and Datatype: 58662, <class 'numpy.int64'>
+INFO:root:Unit and Datatype: 58662, <type 'numpy.int64'>
 INFO:root:Length: True
 INFO:root:Is Price float: True
 INFO:root:Is price greater than 0: False
@@ -22929,7 +22929,7 @@ INFO:root:Row number: 22623
 INFO:root:Row number: 22624
 INFO:root:Row number: 22625
 INFO:root:Timestamps is more than 3 seconds than earlier timestamp
-INFO:root:Unit and Datatype: 435791, <class 'numpy.int64'>
+INFO:root:Unit and Datatype: 435791, <type 'numpy.int64'>
 INFO:root:Length: True
 INFO:root:Is Price float: True
 INFO:root:Is price greater than 0: True
@@ -24420,7 +24420,7 @@ INFO:root:Row number: 24106
 INFO:root:Row number: 24107
 INFO:root:Row number: 24108
 INFO:root:Initial condition of datatypes and range not met
-INFO:root:Unit and Datatype: 12736, <class 'numpy.int64'>
+INFO:root:Unit and Datatype: 12736, <type 'numpy.int64'>
 INFO:root:Length: True
 INFO:root:Is Price float: True
 INFO:root:Is price greater than 0: False
@@ -24730,7 +24730,7 @@ INFO:root:Row number: 24408
 INFO:root:Row number: 24409
 INFO:root:Row number: 24410
 INFO:root:Initial condition of datatypes and range not met
-INFO:root:Unit and Datatype: 0, <class 'numpy.int64'>
+INFO:root:Unit and Datatype: 0, <type 'numpy.int64'>
 INFO:root:Length: True
 INFO:root:Is Price float: True
 INFO:root:Is price greater than 0: True
@@ -25059,7 +25059,7 @@ INFO:root:Row number: 24729
 INFO:root:Row number: 24730
 INFO:root:Row number: 24731
 INFO:root:Initial condition of datatypes and range not met
-INFO:root:Unit and Datatype: 192879, <class 'numpy.int64'>
+INFO:root:Unit and Datatype: 192879, <type 'numpy.int64'>
 INFO:root:Length: True
 INFO:root:Is Price float: True
 INFO:root:Is price greater than 0: False
@@ -25101,7 +25101,7 @@ INFO:root:Row number: 24763
 INFO:root:Row number: 24764
 INFO:root:Row number: 24765
 INFO:root:Initial condition of datatypes and range not met
-INFO:root:Unit and Datatype: -472143, <class 'numpy.int64'>
+INFO:root:Unit and Datatype: -472143, <type 'numpy.int64'>
 INFO:root:Length: True
 INFO:root:Is Price float: True
 INFO:root:Is price greater than 0: True
@@ -25183,7 +25183,7 @@ INFO:root:Row number: 24837
 INFO:root:Row number: 24838
 INFO:root:Row number: 24839
 INFO:root:Timestamps is more than 3 seconds than earlier timestamp
-INFO:root:Unit and Datatype: 681618, <class 'numpy.int64'>
+INFO:root:Unit and Datatype: 681618, <type 'numpy.int64'>
 INFO:root:Length: True
 INFO:root:Is Price float: True
 INFO:root:Is price greater than 0: True
@@ -25686,7 +25686,7 @@ INFO:root:Row number: 25332
 INFO:root:Row number: 25333
 INFO:root:Row number: 25334
 INFO:root:Timestamps is more than 3 seconds than earlier timestamp
-INFO:root:Unit and Datatype: 538742, <class 'numpy.int64'>
+INFO:root:Unit and Datatype: 538742, <type 'numpy.int64'>
 INFO:root:Length: True
 INFO:root:Is Price float: True
 INFO:root:Is price greater than 0: True
@@ -26102,7 +26102,7 @@ INFO:root:Row number: 25740
 INFO:root:Row number: 25741
 INFO:root:Row number: 25742
 INFO:root:Initial condition of datatypes and range not met
-INFO:root:Unit and Datatype: 363692, <class 'numpy.int64'>
+INFO:root:Unit and Datatype: 363692, <type 'numpy.int64'>
 INFO:root:Length: True
 INFO:root:Is Price float: True
 INFO:root:Is price greater than 0: False
@@ -26340,7 +26340,7 @@ INFO:root:Row number: 25970
 INFO:root:Row number: 25971
 INFO:root:Row number: 25972
 INFO:root:Initial condition of datatypes and range not met
-INFO:root:Unit and Datatype: 270774, <class 'numpy.int64'>
+INFO:root:Unit and Datatype: 270774, <type 'numpy.int64'>
 INFO:root:Length: True
 INFO:root:Is Price float: True
 INFO:root:Is price greater than 0: False
@@ -26460,7 +26460,7 @@ INFO:root:Row number: 26082
 INFO:root:Row number: 26083
 INFO:root:Row number: 26084
 INFO:root:Initial condition of datatypes and range not met
-INFO:root:Unit and Datatype: 36951, <class 'numpy.int64'>
+INFO:root:Unit and Datatype: 36951, <type 'numpy.int64'>
 INFO:root:Length: True
 INFO:root:Is Price float: True
 INFO:root:Is price greater than 0: False
@@ -26691,7 +26691,7 @@ INFO:root:Row number: 26305
 INFO:root:Row number: 26306
 INFO:root:Row number: 26307
 INFO:root:Initial condition of datatypes and range not met
-INFO:root:Unit and Datatype: 186749, <class 'numpy.int64'>
+INFO:root:Unit and Datatype: 186749, <type 'numpy.int64'>
 INFO:root:Length: True
 INFO:root:Is Price float: True
 INFO:root:Is price greater than 0: False
@@ -26961,7 +26961,7 @@ INFO:root:Row number: 26567
 INFO:root:Row number: 26568
 INFO:root:Row number: 26569
 INFO:root:Initial condition of datatypes and range not met
-INFO:root:Unit and Datatype: 77847, <class 'numpy.int64'>
+INFO:root:Unit and Datatype: 77847, <type 'numpy.int64'>
 INFO:root:Length: True
 INFO:root:Is Price float: True
 INFO:root:Is price greater than 0: False
@@ -26987,7 +26987,7 @@ INFO:root:Row number: 26585
 INFO:root:Row number: 26586
 INFO:root:Row number: 26587
 INFO:root:Initial condition of datatypes and range not met
-INFO:root:Unit and Datatype: 0, <class 'numpy.int64'>
+INFO:root:Unit and Datatype: 0, <type 'numpy.int64'>
 INFO:root:Length: True
 INFO:root:Is Price float: True
 INFO:root:Is price greater than 0: True
@@ -28159,7 +28159,7 @@ INFO:root:Row number: 27749
 INFO:root:Row number: 27750
 INFO:root:Row number: 27751
 INFO:root:Initial condition of datatypes and range not met
-INFO:root:Unit and Datatype: 411752, <class 'numpy.int64'>
+INFO:root:Unit and Datatype: 411752, <type 'numpy.int64'>
 INFO:root:Length: True
 INFO:root:Is Price float: True
 INFO:root:Is price greater than 0: False
@@ -29302,7 +29302,7 @@ INFO:root:Row number: 28884
 INFO:root:Row number: 28885
 INFO:root:Row number: 28886
 INFO:root:Timestamp is more than 3 seconds earlier
-INFO:root:Unit and Datatype: 208491, <class 'numpy.int64'>
+INFO:root:Unit and Datatype: 208491, <type 'numpy.int64'>
 INFO:root:Length: True
 INFO:root:Is Price float: True
 INFO:root:Is price greater than 0: True
@@ -30826,7 +30826,7 @@ INFO:root:Row number: 30400
 INFO:root:Row number: 30401
 INFO:root:Row number: 30402
 INFO:root:Initial condition of datatypes and range not met
-INFO:root:Unit and Datatype: 286122, <class 'numpy.int64'>
+INFO:root:Unit and Datatype: 286122, <type 'numpy.int64'>
 INFO:root:Length: True
 INFO:root:Is Price float: True
 INFO:root:Is price greater than 0: False
@@ -31748,7 +31748,7 @@ INFO:root:Row number: 31314
 INFO:root:Row number: 31315
 INFO:root:Row number: 31316
 INFO:root:Initial condition of datatypes and range not met
-INFO:root:Unit and Datatype: 699927, <class 'numpy.int64'>
+INFO:root:Unit and Datatype: 699927, <type 'numpy.int64'>
 INFO:root:Length: True
 INFO:root:Is Price float: True
 INFO:root:Is price greater than 0: False
@@ -31975,7 +31975,7 @@ INFO:root:Row number: 31533
 INFO:root:Row number: 31534
 INFO:root:Row number: 31535
 INFO:root:Initial condition of datatypes and range not met
-INFO:root:Unit and Datatype: -439021, <class 'numpy.int64'>
+INFO:root:Unit and Datatype: -439021, <type 'numpy.int64'>
 INFO:root:Length: True
 INFO:root:Is Price float: True
 INFO:root:Is price greater than 0: True
@@ -32595,7 +32595,7 @@ INFO:root:Row number: 32145
 INFO:root:Row number: 32146
 INFO:root:Row number: 32147
 INFO:root:Initial condition of datatypes and range not met
-INFO:root:Unit and Datatype: 529657, <class 'numpy.int64'>
+INFO:root:Unit and Datatype: 529657, <type 'numpy.int64'>
 INFO:root:Length: True
 INFO:root:Is Price float: True
 INFO:root:Is price greater than 0: False
@@ -35254,7 +35254,7 @@ INFO:root:Row number: 34796
 INFO:root:Row number: 34797
 INFO:root:Row number: 34798
 INFO:root:Timestamp is more than 3 seconds earlier
-INFO:root:Unit and Datatype: 522934, <class 'numpy.int64'>
+INFO:root:Unit and Datatype: 522934, <type 'numpy.int64'>
 INFO:root:Length: True
 INFO:root:Is Price float: True
 INFO:root:Is price greater than 0: True
@@ -35431,7 +35431,7 @@ INFO:root:Row number: 34965
 INFO:root:Row number: 34966
 INFO:root:Row number: 34967
 INFO:root:Initial condition of datatypes and range not met
-INFO:root:Unit and Datatype: 636141, <class 'numpy.int64'>
+INFO:root:Unit and Datatype: 636141, <type 'numpy.int64'>
 INFO:root:Length: True
 INFO:root:Is Price float: True
 INFO:root:Is price greater than 0: False
@@ -36080,7 +36080,7 @@ INFO:root:Row number: 35606
 INFO:root:Row number: 35607
 INFO:root:Row number: 35608
 INFO:root:Initial condition of datatypes and range not met
-INFO:root:Unit and Datatype: 527372, <class 'numpy.int64'>
+INFO:root:Unit and Datatype: 527372, <type 'numpy.int64'>
 INFO:root:Length: True
 INFO:root:Is Price float: True
 INFO:root:Is price greater than 0: False
@@ -36786,7 +36786,7 @@ INFO:root:Row number: 36304
 INFO:root:Row number: 36305
 INFO:root:Row number: 36306
 INFO:root:Initial condition of datatypes and range not met
-INFO:root:Unit and Datatype: 396528, <class 'numpy.int64'>
+INFO:root:Unit and Datatype: 396528, <type 'numpy.int64'>
 INFO:root:Length: True
 INFO:root:Is Price float: True
 INFO:root:Is price greater than 0: False
@@ -37312,7 +37312,7 @@ INFO:root:Row number: 36822
 INFO:root:Row number: 36823
 INFO:root:Row number: 36824
 INFO:root:Timestamps is more than 3 seconds than earlier timestamp
-INFO:root:Unit and Datatype: 334568, <class 'numpy.int64'>
+INFO:root:Unit and Datatype: 334568, <type 'numpy.int64'>
 INFO:root:Length: True
 INFO:root:Is Price float: True
 INFO:root:Is price greater than 0: True
@@ -37834,7 +37834,7 @@ INFO:root:Row number: 37336
 INFO:root:Row number: 37337
 INFO:root:Row number: 37338
 INFO:root:Initial condition of datatypes and range not met
-INFO:root:Unit and Datatype: 210083, <class 'numpy.int64'>
+INFO:root:Unit and Datatype: 210083, <type 'numpy.int64'>
 INFO:root:Length: True
 INFO:root:Is Price float: True
 INFO:root:Is price greater than 0: False
@@ -38291,7 +38291,7 @@ INFO:root:Row number: 37785
 INFO:root:Row number: 37786
 INFO:root:Row number: 37787
 INFO:root:Initial condition of datatypes and range not met
-INFO:root:Unit and Datatype: 389093, <class 'numpy.int64'>
+INFO:root:Unit and Datatype: 389093, <type 'numpy.int64'>
 INFO:root:Length: True
 INFO:root:Is Price float: True
 INFO:root:Is price greater than 0: False
@@ -39330,7 +39330,7 @@ INFO:root:Row number: 38816
 INFO:root:Row number: 38817
 INFO:root:Row number: 38818
 INFO:root:Timestamps is more than 3 seconds than earlier timestamp
-INFO:root:Unit and Datatype: 550973, <class 'numpy.int64'>
+INFO:root:Unit and Datatype: 550973, <type 'numpy.int64'>
 INFO:root:Length: True
 INFO:root:Is Price float: True
 INFO:root:Is price greater than 0: True
@@ -40675,7 +40675,7 @@ INFO:root:Row number: 40153
 INFO:root:Row number: 40154
 INFO:root:Row number: 40155
 INFO:root:Initial condition of datatypes and range not met
-INFO:root:Unit and Datatype: 300090, <class 'numpy.int64'>
+INFO:root:Unit and Datatype: 300090, <type 'numpy.int64'>
 INFO:root:Length: True
 INFO:root:Is Price float: True
 INFO:root:Is price greater than 0: False
@@ -40716,7 +40716,7 @@ INFO:root:Row number: 40186
 INFO:root:Row number: 40187
 INFO:root:Row number: 40188
 INFO:root:Initial condition of datatypes and range not met
-INFO:root:Unit and Datatype: 460132, <class 'numpy.int64'>
+INFO:root:Unit and Datatype: 460132, <type 'numpy.int64'>
 INFO:root:Length: True
 INFO:root:Is Price float: True
 INFO:root:Is price greater than 0: False
@@ -41005,7 +41005,7 @@ INFO:root:Row number: 40467
 INFO:root:Row number: 40468
 INFO:root:Row number: 40469
 INFO:root:Timestamp is more than 3 seconds earlier
-INFO:root:Unit and Datatype: 319787, <class 'numpy.int64'>
+INFO:root:Unit and Datatype: 319787, <type 'numpy.int64'>
 INFO:root:Length: True
 INFO:root:Is Price float: True
 INFO:root:Is price greater than 0: True
@@ -41109,7 +41109,7 @@ INFO:root:Row number: 40563
 INFO:root:Row number: 40564
 INFO:root:Row number: 40565
 INFO:root:Timestamps is more than 3 seconds than earlier timestamp
-INFO:root:Unit and Datatype: 653127, <class 'numpy.int64'>
+INFO:root:Unit and Datatype: 653127, <type 'numpy.int64'>
 INFO:root:Length: True
 INFO:root:Is Price float: True
 INFO:root:Is price greater than 0: True
@@ -42145,7 +42145,7 @@ INFO:root:Row number: 41591
 INFO:root:Row number: 41592
 INFO:root:Row number: 41593
 INFO:root:Initial condition of datatypes and range not met
-INFO:root:Unit and Datatype: 593602, <class 'numpy.int64'>
+INFO:root:Unit and Datatype: 593602, <type 'numpy.int64'>
 INFO:root:Length: True
 INFO:root:Is Price float: True
 INFO:root:Is price greater than 0: False
@@ -42602,7 +42602,7 @@ INFO:root:Row number: 42040
 INFO:root:Row number: 42041
 INFO:root:Row number: 42042
 INFO:root:Timestamp is more than 3 seconds earlier
-INFO:root:Unit and Datatype: 112859, <class 'numpy.int64'>
+INFO:root:Unit and Datatype: 112859, <type 'numpy.int64'>
 INFO:root:Length: True
 INFO:root:Is Price float: True
 INFO:root:Is price greater than 0: True
@@ -42946,7 +42946,7 @@ INFO:root:Row number: 42376
 INFO:root:Row number: 42377
 INFO:root:Row number: 42378
 INFO:root:Initial condition of datatypes and range not met
-INFO:root:Unit and Datatype: -242954, <class 'numpy.int64'>
+INFO:root:Unit and Datatype: -242954, <type 'numpy.int64'>
 INFO:root:Length: True
 INFO:root:Is Price float: True
 INFO:root:Is price greater than 0: True
@@ -43403,7 +43403,7 @@ INFO:root:Row number: 42825
 INFO:root:Row number: 42826
 INFO:root:Row number: 42827
 INFO:root:Initial condition of datatypes and range not met
-INFO:root:Unit and Datatype: 20461, <class 'numpy.int64'>
+INFO:root:Unit and Datatype: 20461, <type 'numpy.int64'>
 INFO:root:Length: True
 INFO:root:Is Price float: True
 INFO:root:Is price greater than 0: False
@@ -44003,7 +44003,7 @@ INFO:root:Row number: 43417
 INFO:root:Row number: 43418
 INFO:root:Row number: 43419
 INFO:root:Initial condition of datatypes and range not met
-INFO:root:Unit and Datatype: 163178, <class 'numpy.int64'>
+INFO:root:Unit and Datatype: 163178, <type 'numpy.int64'>
 INFO:root:Length: True
 INFO:root:Is Price float: True
 INFO:root:Is price greater than 0: False
@@ -45891,7 +45891,7 @@ INFO:root:Row number: 45297
 INFO:root:Row number: 45298
 INFO:root:Row number: 45299
 INFO:root:Initial condition of datatypes and range not met
-INFO:root:Unit and Datatype: 420950, <class 'numpy.int64'>
+INFO:root:Unit and Datatype: 420950, <type 'numpy.int64'>
 INFO:root:Length: True
 INFO:root:Is Price float: True
 INFO:root:Is price greater than 0: False
@@ -47593,7 +47593,7 @@ INFO:root:Row number: 46991
 INFO:root:Row number: 46992
 INFO:root:Row number: 46993
 INFO:root:Initial condition of datatypes and range not met
-INFO:root:Unit and Datatype: 622516, <class 'numpy.int64'>
+INFO:root:Unit and Datatype: 622516, <type 'numpy.int64'>
 INFO:root:Length: True
 INFO:root:Is Price float: True
 INFO:root:Is price greater than 0: False
@@ -48088,7 +48088,7 @@ INFO:root:Row number: 47478
 INFO:root:Row number: 47479
 INFO:root:Row number: 47480
 INFO:root:Initial condition of datatypes and range not met
-INFO:root:Unit and Datatype: 514090, <class 'numpy.int64'>
+INFO:root:Unit and Datatype: 514090, <type 'numpy.int64'>
 INFO:root:Length: True
 INFO:root:Is Price float: True
 INFO:root:Is price greater than 0: False
@@ -48404,7 +48404,7 @@ INFO:root:Row number: 47786
 INFO:root:Row number: 47787
 INFO:root:Row number: 47788
 INFO:root:Initial condition of datatypes and range not met
-INFO:root:Unit and Datatype: 302379, <class 'numpy.int64'>
+INFO:root:Unit and Datatype: 302379, <type 'numpy.int64'>
 INFO:root:Length: True
 INFO:root:Is Price float: True
 INFO:root:Is price greater than 0: False
@@ -50493,7 +50493,7 @@ INFO:root:Row number: 49867
 INFO:root:Row number: 49868
 INFO:root:Row number: 49869
 INFO:root:Initial condition of datatypes and range not met
-INFO:root:Unit and Datatype: 718251, <class 'numpy.int64'>
+INFO:root:Unit and Datatype: 718251, <type 'numpy.int64'>
 INFO:root:Length: True
 INFO:root:Is Price float: True
 INFO:root:Is price greater than 0: False
@@ -50835,7 +50835,7 @@ INFO:root:Row number: 50201
 INFO:root:Row number: 50202
 INFO:root:Row number: 50203
 INFO:root:Timestamp is more than 3 seconds earlier
-INFO:root:Unit and Datatype: 706245, <class 'numpy.int64'>
+INFO:root:Unit and Datatype: 706245, <type 'numpy.int64'>
 INFO:root:Length: True
 INFO:root:Is Price float: True
 INFO:root:Is price greater than 0: True
@@ -51554,7 +51554,7 @@ INFO:root:Row number: 50912
 INFO:root:Row number: 50913
 INFO:root:Row number: 50914
 INFO:root:Timestamp is more than 3 seconds earlier
-INFO:root:Unit and Datatype: 83421, <class 'numpy.int64'>
+INFO:root:Unit and Datatype: 83421, <type 'numpy.int64'>
 INFO:root:Length: True
 INFO:root:Is Price float: True
 INFO:root:Is price greater than 0: True
@@ -51741,7 +51741,7 @@ INFO:root:Row number: 51091
 INFO:root:Row number: 51092
 INFO:root:Row number: 51093
 INFO:root:Initial condition of datatypes and range not met
-INFO:root:Unit and Datatype: -449324, <class 'numpy.int64'>
+INFO:root:Unit and Datatype: -449324, <type 'numpy.int64'>
 INFO:root:Length: True
 INFO:root:Is Price float: True
 INFO:root:Is price greater than 0: True
@@ -52170,7 +52170,7 @@ INFO:root:Row number: 51512
 INFO:root:Row number: 51513
 INFO:root:Row number: 51514
 INFO:root:Initial condition of datatypes and range not met
-INFO:root:Unit and Datatype: 277509, <class 'numpy.int64'>
+INFO:root:Unit and Datatype: 277509, <type 'numpy.int64'>
 INFO:root:Length: True
 INFO:root:Is Price float: True
 INFO:root:Is price greater than 0: False
@@ -52387,7 +52387,7 @@ INFO:root:Row number: 51721
 INFO:root:Row number: 51722
 INFO:root:Row number: 51723
 INFO:root:Initial condition of datatypes and range not met
-INFO:root:Unit and Datatype: 166659, <class 'numpy.int64'>
+INFO:root:Unit and Datatype: 166659, <type 'numpy.int64'>
 INFO:root:Length: True
 INFO:root:Is Price float: True
 INFO:root:Is price greater than 0: False
@@ -52979,7 +52979,7 @@ INFO:root:Row number: 52305
 INFO:root:Row number: 52306
 INFO:root:Row number: 52307
 INFO:root:Initial condition of datatypes and range not met
-INFO:root:Unit and Datatype: 114887, <class 'numpy.int64'>
+INFO:root:Unit and Datatype: 114887, <type 'numpy.int64'>
 INFO:root:Length: True
 INFO:root:Is Price float: True
 INFO:root:Is price greater than 0: False
@@ -53153,7 +53153,7 @@ INFO:root:Row number: 52471
 INFO:root:Row number: 52472
 INFO:root:Row number: 52473
 INFO:root:Initial condition of datatypes and range not met
-INFO:root:Unit and Datatype: 204749, <class 'numpy.int64'>
+INFO:root:Unit and Datatype: 204749, <type 'numpy.int64'>
 INFO:root:Length: True
 INFO:root:Is Price float: True
 INFO:root:Is price greater than 0: False
@@ -53351,7 +53351,7 @@ INFO:root:Row number: 52661
 INFO:root:Row number: 52662
 INFO:root:Row number: 52663
 INFO:root:Initial condition of datatypes and range not met
-INFO:root:Unit and Datatype: 447207, <class 'numpy.int64'>
+INFO:root:Unit and Datatype: 447207, <type 'numpy.int64'>
 INFO:root:Length: True
 INFO:root:Is Price float: True
 INFO:root:Is price greater than 0: False
@@ -53529,7 +53529,7 @@ INFO:root:Row number: 52831
 INFO:root:Row number: 52832
 INFO:root:Row number: 52833
 INFO:root:Initial condition of datatypes and range not met
-INFO:root:Unit and Datatype: -477496, <class 'numpy.int64'>
+INFO:root:Unit and Datatype: -477496, <type 'numpy.int64'>
 INFO:root:Length: True
 INFO:root:Is Price float: True
 INFO:root:Is price greater than 0: True
@@ -53910,7 +53910,7 @@ INFO:root:Row number: 53204
 INFO:root:Row number: 53205
 INFO:root:Row number: 53206
 INFO:root:Initial condition of datatypes and range not met
-INFO:root:Unit and Datatype: -654387, <class 'numpy.int64'>
+INFO:root:Unit and Datatype: -654387, <type 'numpy.int64'>
 INFO:root:Length: True
 INFO:root:Is Price float: True
 INFO:root:Is price greater than 0: True
@@ -54241,7 +54241,7 @@ INFO:root:Row number: 53527
 INFO:root:Row number: 53528
 INFO:root:Row number: 53529
 INFO:root:Initial condition of datatypes and range not met
-INFO:root:Unit and Datatype: 559545, <class 'numpy.int64'>
+INFO:root:Unit and Datatype: 559545, <type 'numpy.int64'>
 INFO:root:Length: True
 INFO:root:Is Price float: True
 INFO:root:Is price greater than 0: False
@@ -55199,7 +55199,7 @@ INFO:root:Row number: 54477
 INFO:root:Row number: 54478
 INFO:root:Row number: 54479
 INFO:root:Initial condition of datatypes and range not met
-INFO:root:Unit and Datatype: 548897, <class 'numpy.int64'>
+INFO:root:Unit and Datatype: 548897, <type 'numpy.int64'>
 INFO:root:Length: True
 INFO:root:Is Price float: True
 INFO:root:Is price greater than 0: False
@@ -55517,7 +55517,7 @@ INFO:root:Row number: 54787
 INFO:root:Row number: 54788
 INFO:root:Row number: 54789
 INFO:root:Initial condition of datatypes and range not met
-INFO:root:Unit and Datatype: 108536, <class 'numpy.int64'>
+INFO:root:Unit and Datatype: 108536, <type 'numpy.int64'>
 INFO:root:Length: True
 INFO:root:Is Price float: True
 INFO:root:Is price greater than 0: False
@@ -56023,7 +56023,7 @@ INFO:root:Row number: 55285
 INFO:root:Row number: 55286
 INFO:root:Row number: 55287
 INFO:root:Initial condition of datatypes and range not met
-INFO:root:Unit and Datatype: 740476, <class 'numpy.int64'>
+INFO:root:Unit and Datatype: 740476, <type 'numpy.int64'>
 INFO:root:Length: True
 INFO:root:Is Price float: True
 INFO:root:Is price greater than 0: False
@@ -56554,7 +56554,7 @@ INFO:root:Row number: 55808
 INFO:root:Row number: 55809
 INFO:root:Row number: 55810
 INFO:root:Initial condition of datatypes and range not met
-INFO:root:Unit and Datatype: 79829, <class 'numpy.int64'>
+INFO:root:Unit and Datatype: 79829, <type 'numpy.int64'>
 INFO:root:Length: True
 INFO:root:Is Price float: True
 INFO:root:Is price greater than 0: False
@@ -57204,7 +57204,7 @@ INFO:root:Row number: 56450
 INFO:root:Row number: 56451
 INFO:root:Row number: 56452
 INFO:root:Initial condition of datatypes and range not met
-INFO:root:Unit and Datatype: 704983, <class 'numpy.int64'>
+INFO:root:Unit and Datatype: 704983, <type 'numpy.int64'>
 INFO:root:Length: True
 INFO:root:Is Price float: True
 INFO:root:Is price greater than 0: False
@@ -57217,7 +57217,7 @@ INFO:root:Row number: 56455
 INFO:root:Row number: 56456
 INFO:root:Row number: 56457
 INFO:root:Initial condition of datatypes and range not met
-INFO:root:Unit and Datatype: 12461, <class 'numpy.int64'>
+INFO:root:Unit and Datatype: 12461, <type 'numpy.int64'>
 INFO:root:Length: True
 INFO:root:Is Price float: True
 INFO:root:Is price greater than 0: False
@@ -57488,7 +57488,7 @@ INFO:root:Row number: 56718
 INFO:root:Row number: 56719
 INFO:root:Row number: 56720
 INFO:root:Initial condition of datatypes and range not met
-INFO:root:Unit and Datatype: 603842, <class 'numpy.int64'>
+INFO:root:Unit and Datatype: 603842, <type 'numpy.int64'>
 INFO:root:Length: True
 INFO:root:Is Price float: True
 INFO:root:Is price greater than 0: False
@@ -57945,7 +57945,7 @@ INFO:root:Row number: 57167
 INFO:root:Row number: 57168
 INFO:root:Row number: 57169
 INFO:root:Timestamps is more than 3 seconds than earlier timestamp
-INFO:root:Unit and Datatype: 148362, <class 'numpy.int64'>
+INFO:root:Unit and Datatype: 148362, <type 'numpy.int64'>
 INFO:root:Length: True
 INFO:root:Is Price float: True
 INFO:root:Is price greater than 0: True
@@ -58254,7 +58254,7 @@ INFO:root:Row number: 57468
 INFO:root:Row number: 57469
 INFO:root:Row number: 57470
 INFO:root:Timestamp is more than 3 seconds earlier
-INFO:root:Unit and Datatype: 328046, <class 'numpy.int64'>
+INFO:root:Unit and Datatype: 328046, <type 'numpy.int64'>
 INFO:root:Length: True
 INFO:root:Is Price float: True
 INFO:root:Is price greater than 0: True
@@ -59372,7 +59372,7 @@ INFO:root:Row number: 58578
 INFO:root:Row number: 58579
 INFO:root:Row number: 58580
 INFO:root:Initial condition of datatypes and range not met
-INFO:root:Unit and Datatype: 384205, <class 'numpy.int64'>
+INFO:root:Unit and Datatype: 384205, <type 'numpy.int64'>
 INFO:root:Length: True
 INFO:root:Is Price float: True
 INFO:root:Is price greater than 0: False
@@ -60446,7 +60446,7 @@ INFO:root:Row number: 59644
 INFO:root:Row number: 59645
 INFO:root:Row number: 59646
 INFO:root:Timestamp is more than 3 seconds earlier
-INFO:root:Unit and Datatype: 110083, <class 'numpy.int64'>
+INFO:root:Unit and Datatype: 110083, <type 'numpy.int64'>
 INFO:root:Length: True
 INFO:root:Is Price float: True
 INFO:root:Is price greater than 0: True
@@ -60550,7 +60550,7 @@ INFO:root:Row number: 59740
 INFO:root:Row number: 59741
 INFO:root:Row number: 59742
 INFO:root:Initial condition of datatypes and range not met
-INFO:root:Unit and Datatype: 0, <class 'numpy.int64'>
+INFO:root:Unit and Datatype: 0, <type 'numpy.int64'>
 INFO:root:Length: True
 INFO:root:Is Price float: True
 INFO:root:Is price greater than 0: True
@@ -61036,7 +61036,7 @@ INFO:root:Row number: 60218
 INFO:root:Row number: 60219
 INFO:root:Row number: 60220
 INFO:root:Initial condition of datatypes and range not met
-INFO:root:Unit and Datatype: 181161, <class 'numpy.int64'>
+INFO:root:Unit and Datatype: 181161, <type 'numpy.int64'>
 INFO:root:Length: True
 INFO:root:Is Price float: True
 INFO:root:Is price greater than 0: False
@@ -61695,7 +61695,7 @@ INFO:root:Row number: 60869
 INFO:root:Row number: 60870
 INFO:root:Row number: 60871
 INFO:root:Initial condition of datatypes and range not met
-INFO:root:Unit and Datatype: 111480, <class 'numpy.int64'>
+INFO:root:Unit and Datatype: 111480, <type 'numpy.int64'>
 INFO:root:Length: True
 INFO:root:Is Price float: True
 INFO:root:Is price greater than 0: False
@@ -62210,7 +62210,7 @@ INFO:root:Row number: 61376
 INFO:root:Row number: 61377
 INFO:root:Row number: 61378
 INFO:root:Initial condition of datatypes and range not met
-INFO:root:Unit and Datatype: 299178, <class 'numpy.int64'>
+INFO:root:Unit and Datatype: 299178, <type 'numpy.int64'>
 INFO:root:Length: True
 INFO:root:Is Price float: True
 INFO:root:Is price greater than 0: False
@@ -62446,7 +62446,7 @@ INFO:root:Row number: 61604
 INFO:root:Row number: 61605
 INFO:root:Row number: 61606
 INFO:root:Timestamp is more than 3 seconds earlier
-INFO:root:Unit and Datatype: 183604, <class 'numpy.int64'>
+INFO:root:Unit and Datatype: 183604, <type 'numpy.int64'>
 INFO:root:Length: True
 INFO:root:Is Price float: True
 INFO:root:Is price greater than 0: True
@@ -62820,7 +62820,7 @@ INFO:root:Row number: 61970
 INFO:root:Row number: 61971
 INFO:root:Row number: 61972
 INFO:root:Initial condition of datatypes and range not met
-INFO:root:Unit and Datatype: 243911, <class 'numpy.int64'>
+INFO:root:Unit and Datatype: 243911, <type 'numpy.int64'>
 INFO:root:Length: True
 INFO:root:Is Price float: True
 INFO:root:Is price greater than 0: False
@@ -63191,7 +63191,7 @@ INFO:root:Row number: 62333
 INFO:root:Row number: 62334
 INFO:root:Row number: 62335
 INFO:root:Initial condition of datatypes and range not met
-INFO:root:Unit and Datatype: 540745, <class 'numpy.int64'>
+INFO:root:Unit and Datatype: 540745, <type 'numpy.int64'>
 INFO:root:Length: True
 INFO:root:Is Price float: True
 INFO:root:Is price greater than 0: False
@@ -64113,7 +64113,7 @@ INFO:root:Row number: 63247
 INFO:root:Row number: 63248
 INFO:root:Row number: 63249
 INFO:root:Initial condition of datatypes and range not met
-INFO:root:Unit and Datatype: 489326, <class 'numpy.int64'>
+INFO:root:Unit and Datatype: 489326, <type 'numpy.int64'>
 INFO:root:Length: True
 INFO:root:Is Price float: True
 INFO:root:Is price greater than 0: False
@@ -65184,7 +65184,7 @@ INFO:root:Row number: 64310
 INFO:root:Row number: 64311
 INFO:root:Row number: 64312
 INFO:root:Initial condition of datatypes and range not met
-INFO:root:Unit and Datatype: 94268, <class 'numpy.int64'>
+INFO:root:Unit and Datatype: 94268, <type 'numpy.int64'>
 INFO:root:Length: True
 INFO:root:Is Price float: True
 INFO:root:Is price greater than 0: False
@@ -65442,7 +65442,7 @@ INFO:root:Row number: 64560
 INFO:root:Row number: 64561
 INFO:root:Row number: 64562
 INFO:root:Initial condition of datatypes and range not met
-INFO:root:Unit and Datatype: 93162, <class 'numpy.int64'>
+INFO:root:Unit and Datatype: 93162, <type 'numpy.int64'>
 INFO:root:Length: True
 INFO:root:Is Price float: True
 INFO:root:Is price greater than 0: False
@@ -67221,7 +67221,7 @@ INFO:root:Row number: 66331
 INFO:root:Row number: 66332
 INFO:root:Row number: 66333
 INFO:root:Initial condition of datatypes and range not met
-INFO:root:Unit and Datatype: 292861, <class 'numpy.int64'>
+INFO:root:Unit and Datatype: 292861, <type 'numpy.int64'>
 INFO:root:Length: True
 INFO:root:Is Price float: True
 INFO:root:Is price greater than 0: False
@@ -67347,7 +67347,7 @@ INFO:root:Row number: 66449
 INFO:root:Row number: 66450
 INFO:root:Row number: 66451
 INFO:root:Initial condition of datatypes and range not met
-INFO:root:Unit and Datatype: -454715, <class 'numpy.int64'>
+INFO:root:Unit and Datatype: -454715, <type 'numpy.int64'>
 INFO:root:Length: True
 INFO:root:Is Price float: True
 INFO:root:Is price greater than 0: True
@@ -67961,7 +67961,7 @@ INFO:root:Row number: 67055
 INFO:root:Row number: 67056
 INFO:root:Row number: 67057
 INFO:root:Initial condition of datatypes and range not met
-INFO:root:Unit and Datatype: -12246, <class 'numpy.int64'>
+INFO:root:Unit and Datatype: -12246, <type 'numpy.int64'>
 INFO:root:Length: True
 INFO:root:Is Price float: True
 INFO:root:Is price greater than 0: True
@@ -68532,7 +68532,7 @@ INFO:root:Row number: 67618
 INFO:root:Row number: 67619
 INFO:root:Row number: 67620
 INFO:root:Timestamp is more than 3 seconds earlier
-INFO:root:Unit and Datatype: 694739, <class 'numpy.int64'>
+INFO:root:Unit and Datatype: 694739, <type 'numpy.int64'>
 INFO:root:Length: True
 INFO:root:Is Price float: True
 INFO:root:Is price greater than 0: True
@@ -68959,7 +68959,7 @@ INFO:root:Row number: 68037
 INFO:root:Row number: 68038
 INFO:root:Row number: 68039
 INFO:root:Initial condition of datatypes and range not met
-INFO:root:Unit and Datatype: 648459, <class 'numpy.int64'>
+INFO:root:Unit and Datatype: 648459, <type 'numpy.int64'>
 INFO:root:Length: True
 INFO:root:Is Price float: True
 INFO:root:Is price greater than 0: False
@@ -70786,7 +70786,7 @@ INFO:root:Row number: 69856
 INFO:root:Row number: 69857
 INFO:root:Row number: 69858
 INFO:root:Initial condition of datatypes and range not met
-INFO:root:Unit and Datatype: -714867, <class 'numpy.int64'>
+INFO:root:Unit and Datatype: -714867, <type 'numpy.int64'>
 INFO:root:Length: True
 INFO:root:Is Price float: True
 INFO:root:Is price greater than 0: True
@@ -70801,7 +70801,7 @@ INFO:root:Row number: 69863
 INFO:root:Row number: 69864
 INFO:root:Row number: 69865
 INFO:root:Initial condition of datatypes and range not met
-INFO:root:Unit and Datatype: -328522, <class 'numpy.int64'>
+INFO:root:Unit and Datatype: -328522, <type 'numpy.int64'>
 INFO:root:Length: True
 INFO:root:Is Price float: True
 INFO:root:Is price greater than 0: True
@@ -70891,7 +70891,7 @@ INFO:root:Row number: 69945
 INFO:root:Row number: 69946
 INFO:root:Row number: 69947
 INFO:root:Initial condition of datatypes and range not met
-INFO:root:Unit and Datatype: 394108, <class 'numpy.int64'>
+INFO:root:Unit and Datatype: 394108, <type 'numpy.int64'>
 INFO:root:Length: True
 INFO:root:Is Price float: True
 INFO:root:Is price greater than 0: False
@@ -71884,7 +71884,7 @@ INFO:root:Row number: 70930
 INFO:root:Row number: 70931
 INFO:root:Row number: 70932
 INFO:root:Timestamp is more than 3 seconds earlier
-INFO:root:Unit and Datatype: 551509, <class 'numpy.int64'>
+INFO:root:Unit and Datatype: 551509, <type 'numpy.int64'>
 INFO:root:Length: True
 INFO:root:Is Price float: True
 INFO:root:Is price greater than 0: True
@@ -72302,7 +72302,7 @@ INFO:root:Row number: 71340
 INFO:root:Row number: 71341
 INFO:root:Row number: 71342
 INFO:root:Initial condition of datatypes and range not met
-INFO:root:Unit and Datatype: 570622, <class 'numpy.int64'>
+INFO:root:Unit and Datatype: 570622, <type 'numpy.int64'>
 INFO:root:Length: True
 INFO:root:Is Price float: True
 INFO:root:Is price greater than 0: False
@@ -73197,7 +73197,7 @@ INFO:root:Row number: 72227
 INFO:root:Row number: 72228
 INFO:root:Row number: 72229
 INFO:root:Timestamp is more than 3 seconds earlier
-INFO:root:Unit and Datatype: 420340, <class 'numpy.int64'>
+INFO:root:Unit and Datatype: 420340, <type 'numpy.int64'>
 INFO:root:Length: True
 INFO:root:Is Price float: True
 INFO:root:Is price greater than 0: True
@@ -73955,7 +73955,7 @@ INFO:root:Row number: 72977
 INFO:root:Row number: 72978
 INFO:root:Row number: 72979
 INFO:root:Initial condition of datatypes and range not met
-INFO:root:Unit and Datatype: -577118, <class 'numpy.int64'>
+INFO:root:Unit and Datatype: -577118, <type 'numpy.int64'>
 INFO:root:Length: True
 INFO:root:Is Price float: True
 INFO:root:Is price greater than 0: True
@@ -74316,7 +74316,7 @@ INFO:root:Row number: 73330
 INFO:root:Row number: 73331
 INFO:root:Row number: 73332
 INFO:root:Timestamps is more than 3 seconds than earlier timestamp
-INFO:root:Unit and Datatype: 487960, <class 'numpy.int64'>
+INFO:root:Unit and Datatype: 487960, <type 'numpy.int64'>
 INFO:root:Length: True
 INFO:root:Is Price float: True
 INFO:root:Is price greater than 0: True
@@ -74784,7 +74784,7 @@ INFO:root:Row number: 73790
 INFO:root:Row number: 73791
 INFO:root:Row number: 73792
 INFO:root:Timestamp is more than 3 seconds earlier
-INFO:root:Unit and Datatype: 487500, <class 'numpy.int64'>
+INFO:root:Unit and Datatype: 487500, <type 'numpy.int64'>
 INFO:root:Length: True
 INFO:root:Is Price float: True
 INFO:root:Is price greater than 0: True
@@ -75606,7 +75606,7 @@ INFO:root:Row number: 74604
 INFO:root:Row number: 74605
 INFO:root:Row number: 74606
 INFO:root:Initial condition of datatypes and range not met
-INFO:root:Unit and Datatype: 704638, <class 'numpy.int64'>
+INFO:root:Unit and Datatype: 704638, <type 'numpy.int64'>
 INFO:root:Length: True
 INFO:root:Is Price float: True
 INFO:root:Is price greater than 0: False
@@ -76206,7 +76206,7 @@ INFO:root:Row number: 75196
 INFO:root:Row number: 75197
 INFO:root:Row number: 75198
 INFO:root:Initial condition of datatypes and range not met
-INFO:root:Unit and Datatype: 166053, <class 'numpy.int64'>
+INFO:root:Unit and Datatype: 166053, <type 'numpy.int64'>
 INFO:root:Length: True
 INFO:root:Is Price float: True
 INFO:root:Is price greater than 0: False
@@ -78213,7 +78213,7 @@ INFO:root:Row number: 77195
 INFO:root:Row number: 77196
 INFO:root:Row number: 77197
 INFO:root:Initial condition of datatypes and range not met
-INFO:root:Unit and Datatype: 487574, <class 'numpy.int64'>
+INFO:root:Unit and Datatype: 487574, <type 'numpy.int64'>
 INFO:root:Length: True
 INFO:root:Is Price float: True
 INFO:root:Is price greater than 0: False
@@ -78371,7 +78371,7 @@ INFO:root:Row number: 77345
 INFO:root:Row number: 77346
 INFO:root:Row number: 77347
 INFO:root:Initial condition of datatypes and range not met
-INFO:root:Unit and Datatype: 355483, <class 'numpy.int64'>
+INFO:root:Unit and Datatype: 355483, <type 'numpy.int64'>
 INFO:root:Length: True
 INFO:root:Is Price float: True
 INFO:root:Is price greater than 0: False
@@ -78426,7 +78426,7 @@ INFO:root:Row number: 77392
 INFO:root:Row number: 77393
 INFO:root:Row number: 77394
 INFO:root:Initial condition of datatypes and range not met
-INFO:root:Unit and Datatype: 360320, <class 'numpy.int64'>
+INFO:root:Unit and Datatype: 360320, <type 'numpy.int64'>
 INFO:root:Length: True
 INFO:root:Is Price float: True
 INFO:root:Is price greater than 0: False
@@ -78644,7 +78644,7 @@ INFO:root:Row number: 77602
 INFO:root:Row number: 77603
 INFO:root:Row number: 77604
 INFO:root:Initial condition of datatypes and range not met
-INFO:root:Unit and Datatype: 660791, <class 'numpy.int64'>
+INFO:root:Unit and Datatype: 660791, <type 'numpy.int64'>
 INFO:root:Length: True
 INFO:root:Is Price float: True
 INFO:root:Is price greater than 0: False
@@ -81412,7 +81412,7 @@ INFO:root:Row number: 80362
 INFO:root:Row number: 80363
 INFO:root:Row number: 80364
 INFO:root:Timestamp is more than 3 seconds earlier
-INFO:root:Unit and Datatype: 124532, <class 'numpy.int64'>
+INFO:root:Unit and Datatype: 124532, <type 'numpy.int64'>
 INFO:root:Length: True
 INFO:root:Is Price float: True
 INFO:root:Is price greater than 0: True
@@ -81898,7 +81898,7 @@ INFO:root:Row number: 80840
 INFO:root:Row number: 80841
 INFO:root:Row number: 80842
 INFO:root:Initial condition of datatypes and range not met
-INFO:root:Unit and Datatype: 641195, <class 'numpy.int64'>
+INFO:root:Unit and Datatype: 641195, <type 'numpy.int64'>
 INFO:root:Length: True
 INFO:root:Is Price float: True
 INFO:root:Is price greater than 0: False
@@ -81994,7 +81994,7 @@ INFO:root:Row number: 80928
 INFO:root:Row number: 80929
 INFO:root:Row number: 80930
 INFO:root:Timestamps is more than 3 seconds than earlier timestamp
-INFO:root:Unit and Datatype: 212706, <class 'numpy.int64'>
+INFO:root:Unit and Datatype: 212706, <type 'numpy.int64'>
 INFO:root:Length: True
 INFO:root:Is Price float: True
 INFO:root:Is price greater than 0: True
@@ -84967,7 +84967,7 @@ INFO:root:Row number: 83893
 INFO:root:Row number: 83894
 INFO:root:Row number: 83895
 INFO:root:Timestamps is more than 3 seconds than earlier timestamp
-INFO:root:Unit and Datatype: 610965, <class 'numpy.int64'>
+INFO:root:Unit and Datatype: 610965, <type 'numpy.int64'>
 INFO:root:Length: True
 INFO:root:Is Price float: True
 INFO:root:Is price greater than 0: True
@@ -86329,7 +86329,7 @@ INFO:root:Row number: 85247
 INFO:root:Row number: 85248
 INFO:root:Row number: 85249
 INFO:root:Initial condition of datatypes and range not met
-INFO:root:Unit and Datatype: 594381, <class 'numpy.int64'>
+INFO:root:Unit and Datatype: 594381, <type 'numpy.int64'>
 INFO:root:Length: True
 INFO:root:Is Price float: True
 INFO:root:Is price greater than 0: False
@@ -86628,7 +86628,7 @@ INFO:root:Row number: 85538
 INFO:root:Row number: 85539
 INFO:root:Row number: 85540
 INFO:root:Initial condition of datatypes and range not met
-INFO:root:Unit and Datatype: 62004, <class 'numpy.int64'>
+INFO:root:Unit and Datatype: 62004, <type 'numpy.int64'>
 INFO:root:Length: True
 INFO:root:Is Price float: True
 INFO:root:Is price greater than 0: False
@@ -87464,7 +87464,7 @@ INFO:root:Row number: 86366
 INFO:root:Row number: 86367
 INFO:root:Row number: 86368
 INFO:root:Initial condition of datatypes and range not met
-INFO:root:Unit and Datatype: -28260, <class 'numpy.int64'>
+INFO:root:Unit and Datatype: -28260, <type 'numpy.int64'>
 INFO:root:Length: True
 INFO:root:Is Price float: True
 INFO:root:Is price greater than 0: True
@@ -87852,7 +87852,7 @@ INFO:root:Row number: 86746
 INFO:root:Row number: 86747
 INFO:root:Row number: 86748
 INFO:root:Initial condition of datatypes and range not met
-INFO:root:Unit and Datatype: 415014, <class 'numpy.int64'>
+INFO:root:Unit and Datatype: 415014, <type 'numpy.int64'>
 INFO:root:Length: True
 INFO:root:Is Price float: True
 INFO:root:Is price greater than 0: False
@@ -88031,7 +88031,7 @@ INFO:root:Row number: 86917
 INFO:root:Row number: 86918
 INFO:root:Row number: 86919
 INFO:root:Timestamps is more than 3 seconds than earlier timestamp
-INFO:root:Unit and Datatype: 486382, <class 'numpy.int64'>
+INFO:root:Unit and Datatype: 486382, <type 'numpy.int64'>
 INFO:root:Length: True
 INFO:root:Is Price float: True
 INFO:root:Is price greater than 0: True
@@ -88790,7 +88790,7 @@ INFO:root:Row number: 87668
 INFO:root:Row number: 87669
 INFO:root:Row number: 87670
 INFO:root:Timestamp is more than 3 seconds earlier
-INFO:root:Unit and Datatype: 53173, <class 'numpy.int64'>
+INFO:root:Unit and Datatype: 53173, <type 'numpy.int64'>
 INFO:root:Length: True
 INFO:root:Is Price float: True
 INFO:root:Is price greater than 0: True
@@ -88837,7 +88837,7 @@ INFO:root:Row number: 87707
 INFO:root:Row number: 87708
 INFO:root:Row number: 87709
 INFO:root:Timestamp is more than 3 seconds earlier
-INFO:root:Unit and Datatype: 72549, <class 'numpy.int64'>
+INFO:root:Unit and Datatype: 72549, <type 'numpy.int64'>
 INFO:root:Length: True
 INFO:root:Is Price float: True
 INFO:root:Is price greater than 0: True
@@ -88880,7 +88880,7 @@ INFO:root:Row number: 87742
 INFO:root:Row number: 87743
 INFO:root:Row number: 87744
 INFO:root:Initial condition of datatypes and range not met
-INFO:root:Unit and Datatype: 710137, <class 'numpy.int64'>
+INFO:root:Unit and Datatype: 710137, <type 'numpy.int64'>
 INFO:root:Length: True
 INFO:root:Is Price float: True
 INFO:root:Is price greater than 0: False
@@ -89002,7 +89002,7 @@ INFO:root:Row number: 87856
 INFO:root:Row number: 87857
 INFO:root:Row number: 87858
 INFO:root:Initial condition of datatypes and range not met
-INFO:root:Unit and Datatype: 170603, <class 'numpy.int64'>
+INFO:root:Unit and Datatype: 170603, <type 'numpy.int64'>
 INFO:root:Length: True
 INFO:root:Is Price float: True
 INFO:root:Is price greater than 0: False
@@ -89405,7 +89405,7 @@ INFO:root:Row number: 88251
 INFO:root:Row number: 88252
 INFO:root:Row number: 88253
 INFO:root:Timestamp is more than 3 seconds earlier
-INFO:root:Unit and Datatype: 222901, <class 'numpy.int64'>
+INFO:root:Unit and Datatype: 222901, <type 'numpy.int64'>
 INFO:root:Length: True
 INFO:root:Is Price float: True
 INFO:root:Is price greater than 0: True
@@ -92358,7 +92358,7 @@ INFO:root:Row number: 91196
 INFO:root:Row number: 91197
 INFO:root:Row number: 91198
 INFO:root:Initial condition of datatypes and range not met
-INFO:root:Unit and Datatype: -574602, <class 'numpy.int64'>
+INFO:root:Unit and Datatype: -574602, <type 'numpy.int64'>
 INFO:root:Length: True
 INFO:root:Is Price float: True
 INFO:root:Is price greater than 0: True
@@ -93963,7 +93963,7 @@ INFO:root:Row number: 92793
 INFO:root:Row number: 92794
 INFO:root:Row number: 92795
 INFO:root:Timestamp is more than 3 seconds earlier
-INFO:root:Unit and Datatype: 486581, <class 'numpy.int64'>
+INFO:root:Unit and Datatype: 486581, <type 'numpy.int64'>
 INFO:root:Length: True
 INFO:root:Is Price float: True
 INFO:root:Is price greater than 0: True
@@ -94676,7 +94676,7 @@ INFO:root:Row number: 93498
 INFO:root:Row number: 93499
 INFO:root:Row number: 93500
 INFO:root:Initial condition of datatypes and range not met
-INFO:root:Unit and Datatype: 0, <class 'numpy.int64'>
+INFO:root:Unit and Datatype: 0, <type 'numpy.int64'>
 INFO:root:Length: True
 INFO:root:Is Price float: True
 INFO:root:Is price greater than 0: True
@@ -94854,7 +94854,7 @@ INFO:root:Row number: 93668
 INFO:root:Row number: 93669
 INFO:root:Row number: 93670
 INFO:root:Initial condition of datatypes and range not met
-INFO:root:Unit and Datatype: 164862, <class 'numpy.int64'>
+INFO:root:Unit and Datatype: 164862, <type 'numpy.int64'>
 INFO:root:Length: True
 INFO:root:Is Price float: True
 INFO:root:Is price greater than 0: False
@@ -95982,7 +95982,7 @@ INFO:root:Row number: 94788
 INFO:root:Row number: 94789
 INFO:root:Row number: 94790
 INFO:root:Timestamps is more than 3 seconds than earlier timestamp
-INFO:root:Unit and Datatype: 198896, <class 'numpy.int64'>
+INFO:root:Unit and Datatype: 198896, <type 'numpy.int64'>
 INFO:root:Length: True
 INFO:root:Is Price float: True
 INFO:root:Is price greater than 0: True
@@ -96539,7 +96539,7 @@ INFO:root:Row number: 95337
 INFO:root:Row number: 95338
 INFO:root:Row number: 95339
 INFO:root:Initial condition of datatypes and range not met
-INFO:root:Unit and Datatype: -654163, <class 'numpy.int64'>
+INFO:root:Unit and Datatype: -654163, <type 'numpy.int64'>
 INFO:root:Length: True
 INFO:root:Is Price float: True
 INFO:root:Is price greater than 0: True
@@ -96854,7 +96854,7 @@ INFO:root:Row number: 95644
 INFO:root:Row number: 95645
 INFO:root:Row number: 95646
 INFO:root:Timestamps is more than 3 seconds than earlier timestamp
-INFO:root:Unit and Datatype: 285206, <class 'numpy.int64'>
+INFO:root:Unit and Datatype: 285206, <type 'numpy.int64'>
 INFO:root:Length: True
 INFO:root:Is Price float: True
 INFO:root:Is price greater than 0: True
@@ -97519,7 +97519,7 @@ INFO:root:Row number: 96301
 INFO:root:Row number: 96302
 INFO:root:Row number: 96303
 INFO:root:Initial condition of datatypes and range not met
-INFO:root:Unit and Datatype: 679549, <class 'numpy.int64'>
+INFO:root:Unit and Datatype: 679549, <type 'numpy.int64'>
 INFO:root:Length: True
 INFO:root:Is Price float: True
 INFO:root:Is price greater than 0: False
@@ -99136,7 +99136,7 @@ INFO:root:Row number: 97910
 INFO:root:Row number: 97911
 INFO:root:Row number: 97912
 INFO:root:Initial condition of datatypes and range not met
-INFO:root:Unit and Datatype: -313763, <class 'numpy.int64'>
+INFO:root:Unit and Datatype: -313763, <type 'numpy.int64'>
 INFO:root:Length: True
 INFO:root:Is Price float: True
 INFO:root:Is price greater than 0: True
@@ -99619,7 +99619,7 @@ INFO:root:Row number: 98385
 INFO:root:Row number: 98386
 INFO:root:Row number: 98387
 INFO:root:Initial condition of datatypes and range not met
-INFO:root:Unit and Datatype: 10373, <class 'numpy.int64'>
+INFO:root:Unit and Datatype: 10373, <type 'numpy.int64'>
 INFO:root:Length: True
 INFO:root:Is Price float: True
 INFO:root:Is price greater than 0: False
@@ -99910,7 +99910,7 @@ INFO:root:Row number: 98668
 INFO:root:Row number: 98669
 INFO:root:Row number: 98670
 INFO:root:Initial condition of datatypes and range not met
-INFO:root:Unit and Datatype: 138020, <class 'numpy.int64'>
+INFO:root:Unit and Datatype: 138020, <type 'numpy.int64'>
 INFO:root:Length: True
 INFO:root:Is Price float: True
 INFO:root:Is price greater than 0: False
@@ -101159,7 +101159,7 @@ INFO:root:Row number: 99909
 INFO:root:Row number: 99910
 INFO:root:Row number: 99911
 INFO:root:Timestamp is more than 3 seconds earlier
-INFO:root:Unit and Datatype: 709433, <class 'numpy.int64'>
+INFO:root:Unit and Datatype: 709433, <type 'numpy.int64'>
 INFO:root:Length: True
 INFO:root:Is Price float: True
 INFO:root:Is price greater than 0: True
