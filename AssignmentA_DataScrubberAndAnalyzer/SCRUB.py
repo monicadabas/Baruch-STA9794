@@ -2,9 +2,14 @@ from mpi4py import MPI
 import numpy as np
 import pandas as pd
 from operator import attrgetter
+from itertools import islice
 import sys
 import os
+import logging
+from collections import Counter
 
+
+logging.basicConfig(filename ="Scrub_log.log", level= logging.DEBUG, filemode='w')
 
 class Block:
     def __init__(self, start, end):
@@ -31,9 +36,7 @@ def get_line_count(fh,block):
 # function to return timestamp string to datetime format or returns false if not in right format
 def date_parse(s):
     try:
-        t = s.split(".")
-        t = str(":".join(t))
-        return pd.datetime.strptime(t, '%Y%m%d:%H:%M:%S:%f')
+        return pd.datetime.strptime(s, '%Y%m%d:%H:%M:%S.%f')
     except ValueError:
         return "Error"
 
@@ -46,22 +49,29 @@ class Ticks:
         self.units = units
         self.index = index
 
-    # checks if the object has all values in right format, if not returns False, else returns True
-    def check_format(self):
-        self.timestamp = date_parse(self.timestamp)
-        if self.timestamp == "Error":
-            return False, self
 
-        try:
-            self.price = float(self.price)
-            self.units = int(self.units)
-        except ValueError:
-            return False, self
+""" checks if the row tick has all values in right format, if not returns False and raw tick,
+ else returns True and raw tick converted to a list of formatted attributes"""
 
-        if self.price <= 0 or self.units <= 0:
-            return False, self
 
-        return True, self
+def check_format(tick):
+    line = tick.split(",")
+    if len(line) != 3:
+        return False, tick, "Length less than 3"
+    try:
+        line[1] = float(line[1])
+        line[2] = int(line[2])
+    except ValueError:
+        return False, tick, "price or Unit not float/ int"
+
+    if line[1] <= 0 or line[2] <= 0:
+        return False, tick, "price or unit <= 0"
+
+    line[0] = date_parse(line[0])
+    if line[0] == "Error":
+        return False, tick, "timestamp not in format"
+
+    return True, line, "All in format"
 
 
 class IsValidResult:
@@ -76,71 +86,77 @@ and the latest timestamp with which the next chunk of ticks should be compared""
 
 
 def isvalid(tick,t):
-    t0 = date_parse("00010101:00:00:00.000000")
+    #t0 = date_parse("00010101:00:00:00.000000")
 
-    if abs(tick.timestamp-t).total_seconds() <= 3 or t == t0:
-        return IsValidResult(True, tick.timestamp)
-
-    elif t == tick.timestamp:
+    if t == tick.timestamp:
         #logging.info("Duplicate timestamp")
-        return IsValidResult(False,t)
+        return IsValidResult(False,t), "Duplicate"
+
+    elif abs(tick.timestamp-t).total_seconds() <= 3:  # or t == t0:
+        return IsValidResult(True, tick.timestamp),"All good"
 
     else:
-        #logging.info("Timestamps is more than 3 seconds than earlier timestamp")
-        return IsValidResult(False,t)
+        #logging.info("Timestamps is more than 3 seconds away from earlier timestamp")
+        return IsValidResult(False,t), "More than 3 seconds difference"
 
 
-# data parser to convert list of characters read by MPI file into list of Ticks class objects
-# def parser(chunk,current_index):
-
-""" identify noise and signal and write them in separate files
-# file is MPI file
+""" identify noise and write its index in noise.txt
+# file is data.txt
 # block is object of Block class with first and last character index of the part of file to be processed by a node
 # first_index is the index of the first row in the block which is its index in data.txt
 # count is the number of rows in this block"""
 
 
-def identify_noise(fh, block, first_index, count):
-    print("File format is : {}".format(type(fh)))
-    fh.Seek(block.start)
-    current_chunk_end = block.start
-    current_index = first_index
-    t = date_parse("00010101:00:00:00.000000") # a default initial timestamp
+def identify_noise(file, block, first_index, count):
 
-    while current_chunk_end < block.end:
-        fh.Seek(current_chunk_end)
-        block_size = block.end - current_chunk_end + 1
-        buffer_size = min(10000, block_size)
-        chunk = np.empty(buffer_size)
-        fh.Read([chunk, buffer_size])
-
-        data, row_count, chunk_end = parser(chunk,current_index)
-        current_chunk_end += chunk_end
-        current_index += row_count
-
-        with open("noise.txt", 'w') as noise, open("signal.txt", 'w') as signal:
-            for objt in data:
-                is_valid, obj = objt.check_format()
-                if not is_valid:
-                    noise.write(obj.index)
-                    data.remove(obj)
-
-            # do the rest of the checks relative to other rows
-            # sort data so that duplicates can be caught
-
-            data = sorted(data, key=attrgetter('timestamp'))
-            for tick in data:
-                result = isvalid(tick,t)
-
-                if not result.bool:
-                    noise.write(obj.index)
-                    data.remove(obj)
+    with open(file, 'r') as fh, open("noise.txt", 'w') as noise:
+        fh.seek(block.start)
+        total = 0  # number of characters of the block read
+        current_line_index = first_index
+        t = date_parse("00010101:00:00:00.000000")  # default initial timestamp for 1st comparison
+        while count > 0:
+            print("initial timestamp is {} and index is {}".format(t,current_line_index))
+            buffer_size = min(10000, count)  # number of rows to be processed at a time
+            count -= buffer_size
+            lines = islice(fh, buffer_size)
+            data = []
+            for tick in lines:
+                total += len(tick)
+                is_valid_bool, tick_list,reason = check_format(tick)
+                if not is_valid_bool:
+                    logging.info("Index: {}, Reason: {}".format(current_line_index,reason))
+                    noise.write(str(current_line_index)+"\n")
                 else:
-                    t = result.timestamp
-            #noise_list, signal_data, latest_timestamp = segregate(data,t0)
+                    data.append(Ticks(tick_list[0],tick_list[1],tick_list[2],current_line_index))
+                current_line_index += 1
 
-            for tick in data:
-                signal.write("{},{}".format(str(tick.timestamp), str(tick.price)))
+            data = sorted(data, key=attrgetter("timestamp"))
+
+            # for tick in data:
+            #     is_valid_result = isvalid(tick,t)
+            #
+            #     if not is_valid_result.bool:
+            #         noise.write(str(tick.index)+"\n")
+            #     else:
+            #         t = is_valid_result.timestamp
+
+            for i in range(len(data)):
+                if t == date_parse("00010101:00:00:00.000000"):
+                    for j in range(i,len(data)-1):
+                        if t == date_parse("00010101:00:00:00.000000"):
+                            if abs(data[j].timestamp-data[j+1].timestamp).total_seconds() <= 3:
+                                t = data[j].timestamp
+                                logging.info("timestamp: {}, index: {}".format(t,data[j].index))
+                                break
+
+                is_valid_result, reason = isvalid(data[i],t)
+
+                if not is_valid_result.bool:
+                    logging.info("Index: {}, Reason: {}, Time: {}".format(data[i].index, reason,t))
+                    noise.write(str(data[i].index)+"\n")
+                else:
+                    t = is_valid_result.timestamp
+
 
 
 """returns adjusted block start and end and the number of ticks in adjusted block"""
@@ -158,12 +174,10 @@ def adjust_blocks(fh,block,rank, nprocs):
             print("Could not seek file")
             MPI.Finalize()
 
-
         fh.Read([buffer, MPI.CHAR])
         if error is not None:
             print("Could not read file")
             MPI.Finalize()
-        #print("Process: {}, Start buffer: {}".format(rank,buffer))
 
         for i in range(buffer_size):
             if buffer[i] == "\n":
@@ -177,12 +191,10 @@ def adjust_blocks(fh,block,rank, nprocs):
             print("Call to seek file failed")
             MPI.Finalize()
 
-
         fh.Read([buffer, MPI.CHAR])
         if error is not None:
             print("Call to read file failed")
             MPI.Finalize()
-        #print("Process: {}, End buffer: {}".format(rank,buffer))
 
         for i in range(buffer_size):
             if buffer[i] == "\n":
@@ -194,6 +206,9 @@ def adjust_blocks(fh,block,rank, nprocs):
     print("Process: {}, Line Count: {}".format(rank,count))
 
     return block, count
+
+
+""" First function to be called when program starts"""
 
 
 def main(argv):
@@ -229,19 +244,18 @@ def main(argv):
     # process each block
 
     """if rank is zero the index of first tick is zero else
-    index of first tick is the sum of line_count of processes with rank less than the node's rank"""
+    index of first tick is the sum of line_count of processes with rank less than the node's rank.
+    Once each node has the index of the first tick in its block, further processing starts"""
 
-    first_index = 0 # index of the first tick in block
+    first_index = 0  # index of the first tick in block
+
     if rank == 0:
-        # print("Process: {}, Index starts at: {}".format(rank,first_index))
-        identify_noise(fh,block,first_index,line_count)
+        identify_noise(argv,block,first_index,line_count)
     else:
-        """each node received line_count of the nodes with rank less than itself and
-        add them to get the index of the first tick in its block"""
         for i in range(rank):
             first_index += comm.recv(source=i)
-        # print("Process: {}, Index starts at: {}".format(rank,first_index))
-        identify_noise(fh,block,first_index,line_count)
+
+        identify_noise(argv,block,first_index,line_count)
 
 
 if __name__ == "__main__":
