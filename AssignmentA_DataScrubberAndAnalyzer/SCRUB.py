@@ -5,11 +5,26 @@ from itertools import islice
 import sys
 import logging
 from collections import Counter
+from datetime import datetime
+#from memory_profiler import profile
 
+
+start_time = datetime.now()
 
 # declaration of log file
 
-logging.basicConfig(filename ="Scrub_log.log", level= logging.DEBUG, filemode='w')
+frmt = '%(levelname)s:%(asctime)s:%(message)s'
+fn = "Scrub_log.log"
+
+if len(sys.argv) == 3:
+    loglevel = sys.argv[2][6:]
+    num_level = getattr(logging, loglevel.upper())
+    if not isinstance(num_level, int):
+        raise ValueError('Invalid log level: %s' % loglevel)
+else:
+    num_level = 'ERROR'
+
+logging.basicConfig(filename=fn, format=frmt, datefmt='%m/%d/%Y %I:%M:%S %p', level=num_level, filemode='w')
 
 
 # definition of block class so store the start and end character index of a block
@@ -50,12 +65,12 @@ def adjust_blocks(fh,block,rank, nprocs):
         fh.Seek(block.start)
         if error is not None:
             print("Could not seek file")
-            MPI.Finalize()
+            sys.exit()
 
         fh.Read([buffer, MPI.CHAR])
         if error is not None:
             print("Could not read file")
-            MPI.Finalize()
+            sys.exit()
 
         for i in range(buffer_size):
             if buffer[i] == "\n":
@@ -67,21 +82,21 @@ def adjust_blocks(fh,block,rank, nprocs):
         fh.Seek(block.end)
         if error is not None:
             print("Call to seek file failed")
-            MPI.Finalize()
+            sys.exit()
 
         fh.Read([buffer, MPI.CHAR])
         if error is not None:
             print("Call to read file failed")
-            MPI.Finalize()
+            sys.exit()
 
         for i in range(buffer_size):
             if buffer[i] == "\n":
                 block.end += i
                 break
 
-    print("Process: {}, Adjusted block: [{}, {}]".format(rank,block.start,block.end))
+    #print("Process: {}, Adjusted block: [{}, {}]".format(rank,block.start,block.end))
     count = get_line_count(fh,block)
-    print("Process: {}, Line Count: {}".format(rank,count))
+    #print("Process: {}, Line Count: {}".format(rank,count))
 
     return block, count
 
@@ -144,7 +159,6 @@ def isvalid(tick,t):
         return IsValidResult(True, tick.timestamp,"All good")
 
     else:
-        #logging.info("Timestamps is more than 3 seconds away from earlier timestamp")
         return IsValidResult(False,t,"More than 3 seconds difference")
 
 
@@ -157,7 +171,6 @@ count is the number of rows in this block"""
 
 
 def identify_noise(file, block, first_index, count):
-
     with open(file, 'r') as fh:
         noise_list = []
         fh.seek(block.start)
@@ -165,8 +178,7 @@ def identify_noise(file, block, first_index, count):
         current_line_index = first_index
         t = date_parse("00010101:00:00:00.000000")  # default initial timestamp for 1st comparison
         while count > 0:
-            print("initial timestamp is {} and index is {}".format(t,current_line_index))
-            buffer_size = min(10000, count)  # number of rows to be processed at a time
+            buffer_size = min(1000, count)  # number of rows to be processed at a time
             count -= buffer_size
             lines = islice(fh, buffer_size)
             data = []
@@ -174,7 +186,7 @@ def identify_noise(file, block, first_index, count):
                 total += len(tick)
                 is_valid_bool, tick_list,reason = check_format(tick)
                 if not is_valid_bool:
-                    logging.info("Index: {}, Reason: {}".format(current_line_index,reason))
+                    logging.debug("Index: {}, Reason: {}".format(current_line_index,reason))
                     noise_list.append(current_line_index)
                 else:
                     data.append(Ticks(tick_list[0],tick_list[1],tick_list[2],current_line_index))
@@ -189,7 +201,7 @@ def identify_noise(file, block, first_index, count):
 
             for i in data:
                 if counts[i.timestamp] > 1:
-                    logging.info("Index: {}, Reason: Duplicate timestamp".format(i.index))
+                    logging.debug("Index: {}, Reason: Duplicate timestamp".format(i.index))
                     noise_list.append(i.index)
                     del i
 
@@ -199,25 +211,22 @@ def identify_noise(file, block, first_index, count):
                         if t == date_parse("00010101:00:00:00.000000"):
                             if abs(data[j].timestamp-data[j+1].timestamp).total_seconds() <= 3:
                                 t = data[j].timestamp
-                                #logging.info("Initial t was t0 and now it is: {} taken from index: {}".format(t,data[j].index))
                                 break
 
                 is_valid_result = isvalid(data[i],t)
 
                 if not is_valid_result.bool:
-                    logging.info("Index: {}, Reason: {}, Latest Timestamp: {}".
-                                 format(data[i].index,is_valid_result.reason,t))
+                    logging.debug("Index: {}, Reason: {}".
+                                 format(data[i].index,is_valid_result.reason))
                     noise_list.append(data[i].index)
                 else:
-                    #logging.info("Till now t was: {}".format(t))
                     t = is_valid_result.timestamp
-                    #logging.info("t is now: {} at index {}".format(t,data[i].index))
 
     return noise_list
 
 
 # First function to be called when program starts
-
+#@ profile
 def main(argv):
     comm = MPI.COMM_WORLD
     rank = comm.Get_rank()
@@ -228,7 +237,6 @@ def main(argv):
 
     if file_size < nprocs:
         print("Insufficient data in file")
-        MPI.Finalize()
 
     # divide file into nominal blocks for each process (same length)
     block_start = rank * block_size
@@ -239,7 +247,7 @@ def main(argv):
         block_end = file_size
 
     block = Block(block_start,block_end)
-    print("Process {}: Block: [{}, {}]".format(rank,block.start,block.end))
+    #print("Process {}: Block: [{}, {}]".format(rank,block.start,block.end))
 
     # get adjusted blocks so that a block starts at a new tick and ends at the end of a tick
     block, line_count = adjust_blocks(fh,block,rank, nprocs)
@@ -247,6 +255,8 @@ def main(argv):
     # each node sends their line_count to all the nodes with rank greater than itself
     for i in range(rank+1, nprocs):
         comm.send(line_count, dest=i)
+
+    got_all_blocks_index = datetime.now()
 
     # process each block
 
@@ -259,17 +269,19 @@ def main(argv):
     first_index = 0  # index of the first tick in block
 
     if rank == 0:
-        # identify_noise(argv,block,first_index,line_count)
         noise_list = identify_noise(argv,block,first_index,line_count)
+
     else:
         for i in range(rank):
             first_index += comm.recv(source=i)
 
-        # identify_noise(argv,block,first_index,line_count)
         noise_list = identify_noise(argv,block,first_index,line_count)
         comm.send(noise_list,dest=0)
 
+    finish_scrubbing = datetime.now()
+
     if rank == 0:
+        start_writing_noise = datetime.now()
         with open("noise.txt","w") as noise:
             for index in noise_list:
                 noise.write(str(index)+"\n")
@@ -278,12 +290,20 @@ def main(argv):
                 for index in noise_list:
                     noise.write(str(index)+"\n")
 
+        finish_writing_noise = datetime.now()
+
+        logging.info("Time to get blocks: {}".format((got_all_blocks_index-start_time).total_seconds()))
+        logging.info("Time to scrub: {}".format((finish_scrubbing-got_all_blocks_index).total_seconds()))
+        logging.info("Time taken to write noise.txt: {}".format((finish_writing_noise-start_writing_noise).total_seconds()))
+        logging.info("Total time taken is: {}".format((finish_writing_noise-start_time).total_seconds()))
+
 
 # Point of entry
 
 if __name__ == "__main__":
-    if len(sys.argv) != 2:
+    if len(sys.argv) < 2:
         print("Incorrect number of arguments provided")
         sys.exit(0)
     else:
         main(sys.argv[1])
+
