@@ -48,3 +48,22 @@ Step 2: Read each block iteratively in chunks
 Step 3: Plot histogram with X axis range [-150, 150]
 Step 4: Compute return for each row and add it to histogram
 Step 5: Check histogram for normality by computing curse stats
+
+
+Logging:
+Python logging levels from least to highest in terms of logging information
+
+Level	Numeric value
+CRITICAL	50
+ERROR	40
+WARNING	30
+INFO	20
+DEBUG	10
+NOTSET	0
+
+Default logging level given by me: Error
+To change logging level define it via command line: mpirun -n 5 python SCRUB.py data.txt --log=info
+Raises ValueError if incorrect logging level provided
+Currently logs:
+times in info mode and
+tick index of noise and reason for tick to be noise in debug
