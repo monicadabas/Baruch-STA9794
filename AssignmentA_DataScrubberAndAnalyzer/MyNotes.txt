@@ -54,7 +54,7 @@ Step 4: Compute log return for each row starting from 2nd to the second last row
 Step 5: Compute statistics of a normal distribution for each block. Assuming returns to be log normal, the log returns should follow rules of normal distribution. If each block has same values, we can consider the dataset to have log normal returns.
 
 
-Logging:
+Logging:https://docs.python.org/3/howto/logging.html
 Python logging levels from least to highest in terms of logging information
 
 Level	Numeric value
@@ -74,3 +74,9 @@ tick index of noise and reason for tick to be noise in debug
 
 
 Memory Profiling:
+Since memory profiling is not done continuously, my code does not produce line-by-line profiling of any specific function everytime it runs. However, it has the required code commented in case it is required.
+Also, it slows down the program execution time as it gathers the objects and other information required for profiling.
+My code logs the line-by-line memory profiling of functions in a log file created only for memory profiling.
+Hence, my production code does not do detailed profiling but heap profiling logged into the program's log file.
+This is the same log file in which all the other logging takes place.
+
