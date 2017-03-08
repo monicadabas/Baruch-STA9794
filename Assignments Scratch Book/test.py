@@ -116,11 +116,12 @@
 
 import logging
 import sys
+from memory_profiler import profile
 
 
 print(sys.argv)
 loglevel = sys.argv[1][6:]
-
+from memory_profiler import profile
 print(loglevel)
 
 num_level = getattr(logging, loglevel.upper())
@@ -133,3 +134,17 @@ logging.debug('This message should go to the log file')
 logging.info('So should this')
 logging.warning('And this, too')
 
+with open("memory_logger.log", 'w') as mf:
+    @profile(stream=mf)
+    def a():
+        print("Entered a")
+        A = 6
+        c = A**2
+
+    @profile(stream=mf)
+    def b():
+        print("Entered b")
+
+
+    a()
+    b()
