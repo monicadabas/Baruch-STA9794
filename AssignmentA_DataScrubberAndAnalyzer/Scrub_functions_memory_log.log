@@ -1,0 +1,131 @@
+Filename: SCRUB.py
+
+Line #    Mem usage    Increment   Line Contents
+================================================
+    42     63.4 MiB      0.0 MiB   @ profile(stream=mf)
+    43                             def get_line_count(fh,block):
+    44     63.4 MiB      0.0 MiB       buffer_size = block.end + 1 - block.start
+    45     63.4 MiB      0.0 MiB       buffer = np.empty(buffer_size, dtype=str)
+    46                             
+    47     63.4 MiB      0.0 MiB       count = 0
+    48     63.4 MiB      0.0 MiB       fh.Seek(block.start)
+    49     64.2 MiB      0.8 MiB       fh.Read([buffer, MPI.CHAR])
+    50                             
+    51     87.0 MiB     22.8 MiB       for i in range(buffer_size):
+    52     87.0 MiB      0.0 MiB           if buffer[i] == "\n":
+    53     87.0 MiB      0.0 MiB               count += 1
+    54                             
+    55     87.0 MiB      0.0 MiB       return count
+
+
+Filename: SCRUB.py
+
+Line #    Mem usage    Increment   Line Contents
+================================================
+    59     63.4 MiB      0.0 MiB   @ profile(stream=mf)
+    60                             def adjust_blocks(fh,block,rank, nprocs):
+    61     63.4 MiB      0.0 MiB       buffer_size = 100
+    62     63.4 MiB      0.0 MiB       buffer = np.empty(buffer_size, dtype=str)
+    63     63.4 MiB      0.0 MiB       error = fh.Set_errhandler(MPI.ERRORS_RETURN)
+    64                             
+    65                                 # adjust the block start
+    66     63.4 MiB      0.0 MiB       if not(rank == 0):
+    67     63.4 MiB      0.0 MiB           fh.Seek(block.start)
+    68     63.4 MiB      0.0 MiB           if error is not None:
+    69                                         print("Could not seek file")
+    70                                         sys.exit()
+    71                             
+    72     63.4 MiB      0.1 MiB           fh.Read([buffer, MPI.CHAR])
+    73     63.4 MiB      0.0 MiB           if error is not None:
+    74                                         print("Could not read file")
+    75                                         sys.exit()
+    76                             
+    77     63.4 MiB      0.0 MiB           for i in range(buffer_size):
+    78     63.4 MiB      0.0 MiB               if buffer[i] == "\n":
+    79     63.4 MiB      0.0 MiB                   block.start += i + 1
+    80     63.4 MiB      0.0 MiB                   break
+    81                             
+    82                                 # adjust the block end
+    83     63.4 MiB      0.0 MiB       if not(rank == nprocs-1):
+    84     63.4 MiB      0.0 MiB           fh.Seek(block.end)
+    85     63.4 MiB      0.0 MiB           if error is not None:
+    86                                         print("Call to seek file failed")
+    87                                         sys.exit()
+    88                             
+    89     63.4 MiB      0.0 MiB           fh.Read([buffer, MPI.CHAR])
+    90     63.4 MiB      0.0 MiB           if error is not None:
+    91                                         print("Call to read file failed")
+    92                                         sys.exit()
+    93                             
+    94     63.4 MiB      0.0 MiB           for i in range(buffer_size):
+    95     63.4 MiB      0.0 MiB               if buffer[i] == "\n":
+    96     63.4 MiB      0.0 MiB                   block.end += i
+    97     63.4 MiB      0.0 MiB                   break
+    98                             
+    99                                 #print("Process: {}, Adjusted block: [{}, {}]".format(rank,block.start,block.end))
+   100     87.0 MiB     23.6 MiB       count = get_line_count(fh,block)
+   101                                 #print("Process: {}, Line Count: {}".format(rank,count))
+   102                             
+   103     87.0 MiB      0.0 MiB       return block, count
+
+
+Filename: SCRUB.py
+
+Line #    Mem usage    Increment   Line Contents
+================================================
+   174     87.1 MiB      0.0 MiB   @ profile(stream=mf)
+   175                             def identify_noise(file, block, first_index, count):
+   176     87.1 MiB      0.0 MiB       with open(file, 'r') as fh:
+   177     87.1 MiB      0.0 MiB           noise_list = []
+   178     87.1 MiB      0.0 MiB           fh.seek(block.start)
+   179     87.1 MiB      0.0 MiB           total = 0  # number of characters of the block read
+   180     87.1 MiB      0.0 MiB           current_line_index = first_index
+   181     87.1 MiB      0.1 MiB           t = date_parse("00010101:00:00:00.000000")  # default initial timestamp for 1st comparison
+   182     87.6 MiB      0.5 MiB           while count > 0:
+   183     87.6 MiB      0.0 MiB               buffer_size = min(1000, count)  # number of rows to be processed at a time
+   184     87.6 MiB      0.0 MiB               count -= buffer_size
+   185     87.6 MiB      0.0 MiB               lines = islice(fh, buffer_size)
+   186     87.6 MiB      0.0 MiB               data = []
+   187     87.6 MiB      0.0 MiB               for tick in lines:
+   188     87.6 MiB      0.0 MiB                   total += len(tick)
+   189     87.6 MiB      0.0 MiB                   is_valid_bool, tick_list,reason = check_format(tick)
+   190     87.6 MiB      0.0 MiB                   if not is_valid_bool:
+   191     87.6 MiB      0.0 MiB                       logging.debug("Index: {}, Reason: {}".format(current_line_index,reason))
+   192     87.6 MiB      0.0 MiB                       noise_list.append(current_line_index)
+   193                                             else:
+   194     87.6 MiB      0.0 MiB                       data.append(Ticks(tick_list[0],tick_list[1],tick_list[2],current_line_index))
+   195     87.6 MiB      0.0 MiB                   current_line_index += 1
+   196                             
+   197     87.6 MiB      0.0 MiB               counts = Counter()
+   198     87.6 MiB      0.0 MiB               for i in data:
+   199     87.6 MiB      0.0 MiB                   if i.timestamp in counts:
+   200     87.6 MiB      0.0 MiB                       counts[i.timestamp] += 1
+   201                                             else:
+   202     87.6 MiB      0.0 MiB                       counts[i.timestamp] = 1
+   203                             
+   204     87.6 MiB      0.0 MiB               for i in data:
+   205     87.6 MiB      0.0 MiB                   if counts[i.timestamp] > 1:
+   206     87.6 MiB      0.0 MiB                       logging.debug("Index: {}, Reason: Duplicate timestamp".format(i.index))
+   207     87.6 MiB      0.0 MiB                       noise_list.append(i.index)
+   208     87.6 MiB      0.0 MiB                       del i
+   209                             
+   210     87.6 MiB      0.0 MiB               for i in range(len(data)):
+   211     87.6 MiB      0.0 MiB                   if t == date_parse("00010101:00:00:00.000000"):
+   212     87.5 MiB     -0.1 MiB                       for j in range(i,len(data)-1):
+   213                                                     #if t == date_parse("00010101:00:00:00.000000"):
+   214     87.5 MiB      0.0 MiB                           if abs(data[j].timestamp-data[j+1].timestamp).total_seconds() <= 3:
+   215     87.5 MiB      0.0 MiB                               t = data[j].timestamp
+   216     87.5 MiB      0.0 MiB                               break
+   217                             
+   218     87.6 MiB      0.1 MiB                   is_valid_result = isvalid(data[i],t)
+   219                             
+   220     87.6 MiB      0.0 MiB                   if not is_valid_result.bool:
+   221     87.6 MiB      0.0 MiB                       logging.debug("Index: {}, Reason: {}".
+   222     87.6 MiB      0.0 MiB                                    format(data[i].index,is_valid_result.reason))
+   223     87.6 MiB      0.0 MiB                       noise_list.append(data[i].index)
+   224                                             else:
+   225     87.6 MiB      0.0 MiB                       t = is_valid_result.timestamp
+   226                             
+   227     87.6 MiB      0.0 MiB       return noise_list
+
+
