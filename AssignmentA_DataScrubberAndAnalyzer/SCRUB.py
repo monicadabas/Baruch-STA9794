@@ -7,9 +7,11 @@ import logging
 from collections import Counter
 from datetime import datetime
 #from memory_profiler import profile
+from guppy import hpy
 
+h = hpy()
 
-start_time = datetime.now()
+#mf = open("Scrub_functions_memory_log.log", 'w')
 
 # declaration of log file
 
@@ -18,7 +20,11 @@ fn = "Scrub_log.log"
 
 if len(sys.argv) == 3:
     loglevel = sys.argv[2][6:]
-    num_level = getattr(logging, loglevel.upper())
+    try:
+        num_level = getattr(logging, loglevel.upper())
+    except AttributeError:
+        print("Incorrect logging level provided")
+        sys.exit()
     if not isinstance(num_level, int):
         raise ValueError('Invalid log level: %s' % loglevel)
 else:
@@ -26,6 +32,7 @@ else:
 
 logging.basicConfig(filename=fn, format=frmt, datefmt='%m/%d/%Y %I:%M:%S %p', level=num_level, filemode='w')
 
+start_time = datetime.now()
 
 # definition of block class so store the start and end character index of a block
 # block is the part of file to be processed by a node
@@ -37,7 +44,7 @@ class Block:
 
 
 # returns number of ticks or rows in each block (each node processes one block)
-
+#@ profile(stream=mf)
 def get_line_count(fh,block):
     buffer_size = block.end + 1 - block.start
     buffer = np.empty(buffer_size, dtype=str)
@@ -54,7 +61,7 @@ def get_line_count(fh,block):
 
 
 # returns adjusted block start and end and the number of ticks in adjusted block
-
+#@ profile(stream=mf)
 def adjust_blocks(fh,block,rank, nprocs):
     buffer_size = 100
     buffer = np.empty(buffer_size, dtype=str)
@@ -122,7 +129,7 @@ class Ticks:
 
 # checks if the row tick has all values and in right format. If not returns False and raw tick,
 # else returns True and raw tick converted to a list of formatted attributes
-
+#@ profile(stream=mf)
 def check_format(tick):
     line = tick.split(",")
     if len(line) != 3:
@@ -169,7 +176,7 @@ block is object of Block class with first and last character index of the part o
 first_index is the index of the first row in the block which is its index in data.txt
 count is the number of rows in this block"""
 
-
+#@ profile(stream=mf)
 def identify_noise(file, block, first_index, count):
     with open(file, 'r') as fh:
         noise_list = []
@@ -208,10 +215,9 @@ def identify_noise(file, block, first_index, count):
             for i in range(len(data)):
                 if t == date_parse("00010101:00:00:00.000000"):
                     for j in range(i,len(data)-1):
-                        if t == date_parse("00010101:00:00:00.000000"):
-                            if abs(data[j].timestamp-data[j+1].timestamp).total_seconds() <= 3:
-                                t = data[j].timestamp
-                                break
+                        if abs(data[j].timestamp-data[j+1].timestamp).total_seconds() <= 3:
+                            t = data[j].timestamp
+                            break
 
                 is_valid_result = isvalid(data[i],t)
 
@@ -226,7 +232,7 @@ def identify_noise(file, block, first_index, count):
 
 
 # First function to be called when program starts
-#@ profile
+#@ profile(stream=mf)
 def main(argv):
     comm = MPI.COMM_WORLD
     rank = comm.Get_rank()
@@ -292,11 +298,16 @@ def main(argv):
 
         finish_writing_noise = datetime.now()
 
+        logging.info("Time Profile")
         logging.info("Time to get blocks: {}".format((got_all_blocks_index-start_time).total_seconds()))
         logging.info("Time to scrub: {}".format((finish_scrubbing-got_all_blocks_index).total_seconds()))
         logging.info("Time taken to write noise.txt: {}".format((finish_writing_noise-start_writing_noise).total_seconds()))
         logging.info("Total time taken is: {}".format((finish_writing_noise-start_time).total_seconds()))
 
+        logging.info("Memory profile")
+        logging.info(h.heap())
+
+    MPI.Finalize()
 
 # Point of entry
 
@@ -307,3 +318,4 @@ if __name__ == "__main__":
     else:
         main(sys.argv[1])
 
+#mf.close()
