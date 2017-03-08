@@ -9,6 +9,7 @@ Facts about the data:
 				-not in order
 				-difference between two consecutive timestamps can be as large as possible
 7. Data is a stream of network data packets
+8. Prices and Units can increase significantly so should not be taken as noise outright, instead should be first checked for any reason for the spike
 
 Facts about network latency:
 
@@ -23,7 +24,7 @@ Check points:
 4. Two consecutive rows should have timestamps within 3 seconds range
 
 Process:
-SCRUB
+SCRUB: Parallel
 Sequential Step 1: 3 Steps will run in parallel in this step
     Step 1: Divide file into nominal blocks
     Step 2: Adjust block start and end to get the final blocks to be processed by each node
@@ -42,12 +43,15 @@ Each node processes their block as follows
     Step 4: The ticks that get past all checks will be signals so sort them in order of timestamp and add them to signal
 
 
-NORMAL
-Step 1: Divide signal in blocks
-Step 2: Read each block iteratively in chunks
-Step 3: Plot histogram with X axis range [-150, 150]
-Step 4: Compute return for each row and add it to histogram
-Step 5: Check histogram for normality by computing curse stats
+NORMAL: Parallel
+Test for log normality of returns: mean = median, 68% data in 1 std deviation, 95% data in 2 std deviations
+and 99% data in 3 std deviations, kurtosis <= 3, skewness
+
+Step 1: Divide data in blocks and get the index of first row in each block (as done in scrub.py)
+Step 2: Divide the sorted noise file and give it as a list of indexes to each block for further processing with rows from that block only
+Step 3: Read each block iteratively in chunks (as done in scrub.py) disregarding the rows in noise
+Step 4: Compute log return for each row starting from 2nd to the second last row in block. Since each block will work independently, each block will have one row for which return cannot be computed as it wont have the next price. With this we will loose 2*number of nodes data points which will be significantly less than the complete data so wont make any difference.
+Step 5: Compute statistics of a normal distribution for each block. Assuming returns to be log normal, the log returns should follow rules of normal distribution. If each block has same values, we can consider the dataset to have log normal returns.
 
 
 Logging:
@@ -67,3 +71,6 @@ Raises ValueError if incorrect logging level provided
 Currently logs:
 times in info mode and
 tick index of noise and reason for tick to be noise in debug
+
+
+Memory Profiling:
