@@ -9,6 +9,7 @@ from datetime import datetime
 #from memory_profiler import profile
 from guppy import hpy
 
+
 h = hpy()
 
 #mf = open("Scrub_functions_memory_log.log", 'w')
@@ -46,18 +47,22 @@ class Block:
 # returns number of ticks or rows in each block (each node processes one block)
 #@ profile(stream=mf)
 def get_line_count(fh,block):
-    buffer_size = block.end + 1 - block.start
-    buffer = np.empty(buffer_size, dtype=str)
-
-    count = 0
+    block_size = block.end + 1 - block.start
+    count_of_characters_read = 0
+    line_count = 0
     fh.Seek(block.start)
-    fh.Read([buffer, MPI.CHAR])
 
-    for i in range(buffer_size):
-        if buffer[i] == "\n":
-            count += 1
+    while count_of_characters_read < block_size:
+        buffer_size = min(1000,block_size-count_of_characters_read)
+        buff = np.empty(buffer_size, dtype=str)
+        fh.Read([buff, MPI.CHAR])
 
-    return count
+        for i in range(buffer_size):
+            if buff[i] == "\n":
+                line_count += 1
+
+        count_of_characters_read += buffer_size
+    return line_count
 
 
 # returns adjusted block start and end and the number of ticks in adjusted block
@@ -102,13 +107,13 @@ def adjust_blocks(fh,block,rank, nprocs):
                 break
 
     #print("Process: {}, Adjusted block: [{}, {}]".format(rank,block.start,block.end))
-    count = get_line_count(fh,block)
-    #print("Process: {}, Line Count: {}".format(rank,count))
+    line_count = get_line_count(fh,block)
+    #print("Process: {}, Line Count: {}".format(rank,line_count))
 
-    return block, count
+    return block, line_count
 
 
-# function to return timestamp string to datetime format or returns false if not in right format
+# function to return timestamp string to datetime format or returns "Error" if not in right format
 
 def date_parse(s):
     try:
@@ -257,7 +262,7 @@ def main(argv):
 
     # get adjusted blocks so that a block starts at a new tick and ends at the end of a tick
     block, line_count = adjust_blocks(fh,block,rank, nprocs)
-
+    fh.Close()
     # each node sends their line_count to all the nodes with rank greater than itself
     for i in range(rank+1, nprocs):
         comm.send(line_count, dest=i)
@@ -308,6 +313,7 @@ def main(argv):
         logging.info(h.heap())
 
     MPI.Finalize()
+
 
 # Point of entry
 
