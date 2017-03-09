@@ -8,12 +8,38 @@ from itertools import islice
 
 # declaration of log file
 
-logging.basicConfig(filename ="Normal_log.log", level=logging.DEBUG, filemode='w')
+frmt = '%(levelname)s:%(asctime)s:%(message)s'
+fn = "Normal_log.log"
+
+if len(sys.argv) == 4:
+    loglevel = sys.argv[3][6:]
+    try:
+        num_level = getattr(logging, loglevel.upper())
+    except AttributeError:
+        print("Incorrect logging level provided")
+        sys.exit()
+    if not isinstance(num_level, int):
+        raise ValueError('Invalid log level: %s' % loglevel)
+else:
+    num_level = 'ERROR'
+
+logging.basicConfig(filename=fn, format=frmt, datefmt='%m/%d/%Y %I:%M:%S %p', level=num_level, filemode='w')
+
+
+class Stats_of_normal_dist:
+    def __init__(self, mean_, std_dev, variance_):
+        self.mean_ = mean_
+        self.std_dev = std_dev
+        self.variance_ = variance_
+
+
+
+def get_stats(data,noise_indices,data_block,first_index,line_count):
 
 
 # First function to be called when program starts
 # Takes two arguments- 1st is the raw data.txt file and second is the noise.txt file
-# noise.txt has the index of ticks that were identified as noise by SCRUB.py
+# noise.txt has the index of ticks that were identified as noise by SCRUB.py in increasing order
 #@ profile
 def main(data, noise):
     comm = MPI.COMM_WORLD
@@ -25,6 +51,9 @@ def main(data, noise):
 
     if file_size < nprocs:
         print("Insufficient data in file")
+
+    with open(noise, 'r') as noise_file:
+        noise_ticks = noise_file.readlines()
 
     # divide file into nominal blocks for each process (same length)
     block_start = rank * block_size
@@ -38,7 +67,7 @@ def main(data, noise):
     #print("Process {}: Block: [{}, {}]".format(rank,block.start,block.end))
 
     # get adjusted blocks so that a block starts at a new tick and ends at the end of a tick
-    block, line_count = adjust_blocks(fh,block,rank, nprocs)
+    data_block, line_count = adjust_blocks(fh,block,rank, nprocs)
 
     # each node sends their line_count to all the nodes with rank greater than itself
     for i in range(rank+1, nprocs):
@@ -55,24 +84,51 @@ def main(data, noise):
     noise.txt"""
 
     first_index = 0  # index of the first tick in block
-
+    noise_indices = []
     if rank == 0:
-        # noise_list = identify_noise(argv,block,first_index,line_count)
+        for line in noise_ticks:
+            line = int(line.strip("\n"))
+            if line < line_count:
+                noise_indices.append(line)
+            else:
+                break
+
+        normal_stats = get_stats(data,noise_indices,data_block,first_index,line_count)
 
     else:
         for i in range(rank):
             first_index += comm.recv(source=i)
 
-        # noise_list = identify_noise(argv,block,first_index,line_count)
-        #comm.send(noise_list,dest=0)
+        for line in noise_ticks:
+            line = int(line.strip("\n"))
+            if line < first_index + line_count - 1:
+                noise_indices.append(line)
+            else:
+                break
+
+        normal_stats = get_stats(data,noise_indices,data_block,first_index,line_count)
+        comm.send(normal_stats,dest=0)
 
     finish_scrubbing = datetime.now()
+
+    if rank == 0:
+        means = [normal_stats.mean_]
+        std_deviations = [normal_stats.std_dev]
+        variances = [normal_stats.variance_]
+
+        for i in range(1, nprocs):
+            stats = comm.recv(source=i)
+            means.append(stats.mean_)
+            std_deviations.append(stats.std_dev)
+            variances.append(stats.variance_)
+
+        print(means, std_deviations,variances)
 
 
 # Point of entry
 
 if __name__ == "__main__":
-    if len(sys.argv) != 3:
+    if len(sys.argv) < 3:
         print("Incorrect number of arguments provided")
         sys.exit(0)
     else:
