@@ -1,11 +1,20 @@
-from SCRUB import get_line_count, Block, adjust_blocks
+from __future__ import division
+#from SCRUB import get_line_count, Block, adjust_blocks
 from mpi4py import MPI
 from datetime import datetime
 import logging
 import sys
 from itertools import islice
+from operator import itemgetter
+from math import log, e, sqrt
+import numpy as np
+from guppy import hpy
+from scipy.stats.mstats import normaltest
 
 
+h = hpy()
+
+start_time = datetime.now()
 # declaration of log file
 
 frmt = '%(levelname)s:%(asctime)s:%(message)s'
@@ -26,15 +35,146 @@ else:
 logging.basicConfig(filename=fn, format=frmt, datefmt='%m/%d/%Y %I:%M:%S %p', level=num_level, filemode='w')
 
 
-class Stats_of_normal_dist:
+class Block:
+    def __init__(self, start, end):
+        self.start = start
+        self.end = end
+
+
+# returns number of ticks or rows in each block (each node processes one block)
+#@ profile(stream=mf)
+def get_line_count(fh,block):
+    block_size = block.end + 1 - block.start
+    count_of_characters_read = 0
+    line_count = 0
+    fh.Seek(block.start)
+
+    while count_of_characters_read < block_size:
+        buffer_size = min(1000,block_size-count_of_characters_read)
+        buff = np.empty(buffer_size, dtype=str)
+        fh.Read([buff, MPI.CHAR])
+
+        for i in range(buffer_size):
+            if buff[i] == "\n":
+                line_count += 1
+
+        count_of_characters_read += buffer_size
+    return line_count
+
+
+# returns adjusted block start and end and the number of ticks in adjusted block
+#@ profile(stream=mf)
+def adjust_blocks(fh,block,rank, nprocs):
+    buffer_size = 100
+    buffer = np.empty(buffer_size, dtype=str)
+    error = fh.Set_errhandler(MPI.ERRORS_RETURN)
+
+    # adjust the block start
+    if not(rank == 0):
+        fh.Seek(block.start)
+        if error is not None:
+            print("Could not seek file")
+            sys.exit()
+
+        fh.Read([buffer, MPI.CHAR])
+        if error is not None:
+            print("Could not read file")
+            sys.exit()
+
+        for i in range(buffer_size):
+            if buffer[i] == "\n":
+                block.start += i + 1
+                break
+
+    # adjust the block end
+    if not(rank == nprocs-1):
+        fh.Seek(block.end)
+        if error is not None:
+            print("Call to seek file failed")
+            sys.exit()
+
+        fh.Read([buffer, MPI.CHAR])
+        if error is not None:
+            print("Call to read file failed")
+            sys.exit()
+
+        for i in range(buffer_size):
+            if buffer[i] == "\n":
+                block.end += i
+                break
+
+    #print("Process: {}, Adjusted block: [{}, {}]".format(rank,block.start,block.end))
+    line_count = get_line_count(fh,block)
+    #print("Process: {}, Line Count: {}".format(rank,line_count))
+
+    return block, line_count
+
+
+class StatsOfNormalDist:
     def __init__(self, mean_, std_dev, variance_):
         self.mean_ = mean_
         self.std_dev = std_dev
         self.variance_ = variance_
 
 
+def get_stats(data_file,noise_indices,data_block,first_index,line_count):
+    with open(data_file, 'r') as fh:
+        fh.seek(data_block.start)
+        lines_read = 0
+        current_index_data_file = first_index
+        current_index_noise_indices = 0
+        block_mean = 0
+        block_variance = 0
+        #signal_count = 0
 
-def get_stats(data,noise_indices,data_block,first_index,line_count):
+        while lines_read < line_count:
+            buffer_size = min(1000,line_count-lines_read)
+            buff = islice(fh,buffer_size)
+            time_price_linecount = []
+            ticks = []
+            for tick in buff:
+                lines_read += 1
+                # print("current_index_data_file:{}".format(current_index_data_file))
+                # print("current_index_noise_indices: {}".format(current_index_noise_indices))
+                # print("noise_indices[current_index_noise_indices]: {}".format(noise_indices[current_index_noise_indices]))
+                if current_index_data_file == noise_indices[current_index_noise_indices]:
+                    current_index_noise_indices += 1
+                else:
+                    ticks.append(tick)
+                #signal_count += 1
+                current_index_data_file += 1
+                signal = ticks[-1].split(",")
+                signal.append(lines_read-current_index_noise_indices-1)
+                time_price_linecount.append(signal)
+
+            time_price_linecount = sorted(time_price_linecount, key=itemgetter(0))
+            last_tick = time_price_linecount[-1]
+            if lines_read == 0:
+                start_index = 1
+            else:
+                start_index = 0
+
+            for i in range(start_index, len(time_price_linecount)):
+                price_i = float(time_price_linecount[i][1])
+
+                if start_index == 1:
+                    price_i_plus_1 = float(time_price_linecount[i-1][1])
+
+                else:
+                    price_i_plus_1 = float(last_tick[1])
+
+                try:
+                    log_return = log(price_i_plus_1/price_i,e)
+                    last_mean = block_mean
+                    block_mean = last_mean + (log_return-last_mean)/(time_price_linecount[i][3])
+                    block_variance += (log_return-last_mean)*(log_return-block_mean)
+                    block_variance /= (line_count - len(noise_indices)-1)
+                except Exception:
+                    pass
+
+        block_std_dev = sqrt(block_variance)
+
+        return StatsOfNormalDist(block_mean,block_std_dev,block_variance)
 
 
 # First function to be called when program starts
@@ -84,45 +224,52 @@ def main(data, noise):
     noise.txt"""
 
     first_index = 0  # index of the first tick in block
-    noise_indices = []
-    if rank == 0:
-        for line in noise_ticks:
-            line = int(line.strip("\n"))
-            if line < line_count:
-                noise_indices.append(line)
-            else:
-                break
 
+    if rank == 0:
+        noise_indices = list(filter(lambda x: first_index<=int(x)< first_index+line_count,noise_ticks))
         normal_stats = get_stats(data,noise_indices,data_block,first_index,line_count)
 
     else:
         for i in range(rank):
             first_index += comm.recv(source=i)
 
-        for line in noise_ticks:
-            line = int(line.strip("\n"))
-            if line < first_index + line_count - 1:
-                noise_indices.append(line)
-            else:
-                break
+        noise_indices = list(filter(lambda x: first_index<=int(x)< first_index+line_count,noise_ticks))
 
         normal_stats = get_stats(data,noise_indices,data_block,first_index,line_count)
-        comm.send(normal_stats,dest=0)
+        comm.send([normal_stats,line_count-len(noise_indices)],dest=0)
+
 
     finish_scrubbing = datetime.now()
 
     if rank == 0:
-        means = [normal_stats.mean_]
-        std_deviations = [normal_stats.std_dev]
-        variances = [normal_stats.variance_]
-
+        means = [round(normal_stats.mean_,3)]
+        std_deviations = [round(normal_stats.std_dev*100,3)]
+        variances = [round(normal_stats.variance_*10000,3)]
+        no_of_signals = [line_count-len(noise_indices)]
         for i in range(1, nprocs):
-            stats = comm.recv(source=i)
-            means.append(stats.mean_)
-            std_deviations.append(stats.std_dev)
-            variances.append(stats.variance_)
+            stats, count = comm.recv(source=i)
+            means.append(round(stats.mean_,3))
+            std_deviations.append(round(stats.std_dev*100,3))
+            variances.append(round(stats.variance_*10000,3))
+            no_of_signals.append(count)
 
-        print(means, std_deviations,variances)
+        print("Means: {}".format(means))
+        print("Standard Deviations: {}".format(std_deviations))
+        print("Variances: {}".format(variances))
+        print("Signal Count: {}".format(no_of_signals))
+
+        print(normaltest(means))
+
+        all_done = datetime.now()
+
+        logging.info("Time Profile")
+        logging.info("Time to get blocks: {}".format((got_all_blocks_index-start_time).total_seconds()))
+        logging.info("Time to scrub: {}".format((finish_scrubbing-got_all_blocks_index).total_seconds()))
+        #logging.info("Time taken to write noise.txt: {}".format((finish_writing_noise-start_writing_noise).total_seconds()))
+        logging.info("Total time taken is: {}".format((all_done-start_time).total_seconds()))
+
+        logging.info("Memory profile")
+        logging.info(h.heap())
 
 
 # Point of entry
