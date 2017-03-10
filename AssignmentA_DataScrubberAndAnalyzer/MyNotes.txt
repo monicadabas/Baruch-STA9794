@@ -44,33 +44,40 @@ Each node processes their block as follows
 
 
 NORMAL: Parallel
-Test for log normality of returns: mean = median, 68% data in 1 std deviation, 95% data in 2 std deviations
-and 99% data in 3 std deviations, kurtosis <= 3, skewness
+Test for log normality of returns: kurtosis <= 3, skewness
+If skewness is less than -1 or greater than 1, the distribution is highly skewed.
+If skewness is between -1 and -0.5 or between 0.5 and 1, the distribution is moderately skewed.
+If skewness is between -0.5 and 0.5, the distribution is approximately symmetric.
+
+Also output mean, standard deviation as stats of the data.
 
 Step 1: Divide data in blocks and get the index of first row in each block (as done in scrub.py)
 Step 2: Divide the sorted noise file and give it as a list of indexes to each block for further processing with rows from that block only
 Step 3: Read each block iteratively in chunks (as done in scrub.py) disregarding the rows in noise
-Step 4: Compute log return for each row starting from 2nd to the second last row in block. Since each block will work independently, each block will have one row for which return cannot be computed as it wont have the next price. With this we will loose 2*number of nodes data points which will be significantly less than the complete data so wont make any difference.
-Step 5: Compute statistics of a normal distribution for each block. Assuming returns to be log normal, the log returns should follow rules of normal distribution. If each block has same values, we can consider the dataset to have log normal returns.
+Step 4: Compute log return for each signal row starting from 2nd row to the last row in block. Since each block will work independently, each block will have one row for which return cannot be computed as it wont have the last price. With this we will loose 2*number of nodes data points which will be significantly less than the complete data so wont make any difference.
+Step 5: Compute statistics of a normal distribution for each block. Assuming returns to be log normal, the log returns should follow rules of normal distribution.
+Step 6: Each node sends its computed stats to root node.
+Step 7: Once root node has stats of each block, it combines them to get the stats of complete dataset.
+Step 8: Root node applies the limit rules on kutosis and skewness mentioned above and provides normality result.
 
 
-Logging:https://docs.python.org/3/howto/logging.html
+LOGGING:https://docs.python.org/3/howto/logging.html
 Python logging levels from least to highest in terms of logging information
 
 Level	Numeric value
 CRITICAL	50
-ERROR	40
-WARNING	30
-INFO	20
-DEBUG	10
-NOTSET	0
+ERROR	    40
+WARNING	    30
+INFO	    20
+DEBUG	    10
+NOTSET	    0
 
 Default logging level given by me: Error
-To change logging level define it via command line: mpirun -n 5 python SCRUB.py data.txt --log=info
-Raises ValueError if incorrect logging level provided
+To change logging level define it via command line: mpirun -n 5 python SCRUB.py data.txt --log=<logging level>
+If incorrect logging level provided, program stops execution and prints out that it received incorrect logging level
 Currently logs:
-times in info mode and
-tick index of noise and reason for tick to be noise in debug
+times and memory heap in info mode
+tick index of noise and reason for tick to be noise in debug mode
 
 
 Memory Profiling:
