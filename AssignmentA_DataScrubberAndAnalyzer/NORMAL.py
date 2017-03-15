@@ -1,5 +1,4 @@
 from __future__ import division
-#from SCRUB import get_line_count, Block, adjust_blocks
 from mpi4py import MPI
 from datetime import datetime
 import logging
@@ -111,70 +110,129 @@ def adjust_blocks(fh,block,rank, nprocs):
 
 
 class StatsOfNormalDist:
-    def __init__(self, mean_, std_dev, variance_):
+    def __init__(self, mean_, std_dev, variance_, skewness_, kurtosis_, elements_):
         self.mean_ = mean_
         self.std_dev = std_dev
         self.variance_ = variance_
+        self.skewness_ = skewness_
+        self.kurtosis_ = kurtosis_
+        self.elements_ = elements_
+
+
+# def get_stats(data_file,noise_indices,data_block,first_index,line_count):
+#     with open(data_file, 'r') as fh:
+#         fh.seek(data_block.start)
+#         lines_read = 0
+#         current_index_data_file = first_index
+#         current_index_noise_indices = 0
+#         block_mean = 0
+#         block_variance = 0
+#         #signal_count = 0
+#
+#         while lines_read < line_count:
+#             buffer_size = min(1000,line_count-lines_read)
+#             buff = islice(fh,buffer_size)
+#             time_price_linecount = []
+#             ticks = []
+#             for tick in buff:
+#                 lines_read += 1
+#                 # print("current_index_data_file:{}".format(current_index_data_file))
+#                 # print("current_index_noise_indices: {}".format(current_index_noise_indices))
+#                 # print("noise_indices[current_index_noise_indices]: {}".format(noise_indices[current_index_noise_indices]))
+#                 if current_index_data_file == noise_indices[current_index_noise_indices]:
+#                     current_index_noise_indices += 1
+#                 else:
+#                     ticks.append(tick)
+#                 #signal_count += 1
+#                 current_index_data_file += 1
+#                 signal = ticks[-1].split(",")
+#                 signal.append(lines_read-current_index_noise_indices-1)
+#                 time_price_linecount.append(signal)
+#
+#             time_price_linecount = sorted(time_price_linecount, key=itemgetter(0))
+#             last_tick = time_price_linecount[-1]
+#             if lines_read == 0:
+#                 start_index = 1
+#             else:
+#                 start_index = 0
+#
+#             for i in range(start_index, len(time_price_linecount)):
+#                 price_i = float(time_price_linecount[i][1])
+#
+#                 if start_index == 1:
+#                     price_i_plus_1 = float(time_price_linecount[i-1][1])
+#
+#                 else:
+#                     price_i_plus_1 = float(last_tick[1])
+#
+#                 try:
+#                     log_return = log(price_i_plus_1/price_i,e)
+#                     last_mean = block_mean
+#                     block_mean = last_mean + (log_return-last_mean)/(time_price_linecount[i][3])
+#                     block_variance += (log_return-last_mean)*(log_return-block_mean)
+#                     block_variance /= (line_count - len(noise_indices)-1)
+#                 except Exception:
+#                     pass
+#
+#         block_std_dev = sqrt(block_variance)
+#
+#         return StatsOfNormalDist(block_mean,block_std_dev,block_variance)
 
 
 def get_stats(data_file,noise_indices,data_block,first_index,line_count):
+    n, m1, m2, m3, m4 = 0, 0, 0, 0, 0
+    len_noise = len(noise_indices)
     with open(data_file, 'r') as fh:
         fh.seek(data_block.start)
         lines_read = 0
         current_index_data_file = first_index
         current_index_noise_indices = 0
-        block_mean = 0
-        block_variance = 0
-        #signal_count = 0
 
         while lines_read < line_count:
             buffer_size = min(1000,line_count-lines_read)
             buff = islice(fh,buffer_size)
-            time_price_linecount = []
-            ticks = []
-            for tick in buff:
-                lines_read += 1
-                # print("current_index_data_file:{}".format(current_index_data_file))
-                # print("current_index_noise_indices: {}".format(current_index_noise_indices))
-                # print("noise_indices[current_index_noise_indices]: {}".format(noise_indices[current_index_noise_indices]))
-                if current_index_data_file == noise_indices[current_index_noise_indices]:
-                    current_index_noise_indices += 1
+            signal_ticks = []
+            last_tick = None
+            for i in range(buffer_size):
+                tick_index = lines_read + first_index + i
+                if tick_index != noise_indices[current_index_noise_indices]:
+                    signal = buff[i].split(",")
+                    signal_ticks.append([signal[0], signal[1]])
                 else:
-                    ticks.append(tick)
-                #signal_count += 1
-                current_index_data_file += 1
-                signal = ticks[-1].split(",")
-                signal.append(lines_read-current_index_noise_indices-1)
-                time_price_linecount.append(signal)
-
-            time_price_linecount = sorted(time_price_linecount, key=itemgetter(0))
-            last_tick = time_price_linecount[-1]
-            if lines_read == 0:
-                start_index = 1
+                    if current_index_noise_indices + 1 < len_noise:
+                        current_index_noise_indices += 1
+                    continue
+            signal_ticks = sorted(signal_ticks, key=itemgetter(0))
+            len_signal_ticks = len(signal_ticks)
+            if last_tick is None:
+                start = 1
             else:
-                start_index = 0
+                start = 0
+            returns = [] # percentage log returns
+            for i in range(start, len_signal_ticks):
+                log_return = log(signal_ticks[i][1]/signal_ticks[i-1][1], e)
+                returns.append(log_return)
 
-            for i in range(start_index, len(time_price_linecount)):
-                price_i = float(time_price_linecount[i][1])
+            for i in returns:
+                n1 = n
+                n += 1
+                delta = i - m1
+                delta_n = delta/n
+                delta_n2 = delta_n**2
+                term1 = delta * delta_n * n1
+                m1 += delta_n
+                m4 += term1*delta_n2*(n**2 - 3*n + 3) + 6*delta_n2*m2 - 4*delta_n*m3
+                m3 += term1*delta_n*(n-2) - 3*delta_n*m2
+                m2 += term1
 
-                if start_index == 1:
-                    price_i_plus_1 = float(time_price_linecount[i-1][1])
+    no_of_returns = n
+    block_mean = m1
+    block_variance = m2/(n-1)
+    block_std_dev = sqrt(block_variance)
+    block_skewness = sqrt(n)*m3/m2*sqrt(m2)
+    block_kurtosis = n*m4/m2**2 - 3
 
-                else:
-                    price_i_plus_1 = float(last_tick[1])
-
-                try:
-                    log_return = log(price_i_plus_1/price_i,e)
-                    last_mean = block_mean
-                    block_mean = last_mean + (log_return-last_mean)/(time_price_linecount[i][3])
-                    block_variance += (log_return-last_mean)*(log_return-block_mean)
-                    block_variance /= (line_count - len(noise_indices)-1)
-                except Exception:
-                    pass
-
-        block_std_dev = sqrt(block_variance)
-
-        return StatsOfNormalDist(block_mean,block_std_dev,block_variance)
+    return StatsOfNormalDist(block_mean,block_std_dev,block_variance,block_skewness,block_kurtosis,no_of_returns)
 
 
 # First function to be called when program starts
@@ -245,20 +303,26 @@ def main(data, noise):
         means = [round(normal_stats.mean_,3)]
         std_deviations = [round(normal_stats.std_dev*100,3)]
         variances = [round(normal_stats.variance_*10000,3)]
+        kurtosis_s = [round(normal_stats.kurtosis_*10000,3)]
+        no_of_returns = [round(normal_stats.elements_*10000,3)]
         no_of_signals = [line_count-len(noise_indices)]
         for i in range(1, nprocs):
             stats, count = comm.recv(source=i)
             means.append(round(stats.mean_,3))
             std_deviations.append(round(stats.std_dev*100,3))
             variances.append(round(stats.variance_*10000,3))
+            kurtosis_s.append(round(stats.kurtosis_*10000,3))
+            no_of_returns.append(round(stats.elements_*10000,3))
             no_of_signals.append(count)
 
         print("Means: {}".format(means))
         print("Standard Deviations: {}".format(std_deviations))
         print("Variances: {}".format(variances))
+        print("Kurtosis: {}".format(kurtosis_s))
+        print("No of returns: {}".format(no_of_returns))
         print("Signal Count: {}".format(no_of_signals))
 
-        print(normaltest(means))
+        #print(normaltest(means))
 
         all_done = datetime.now()
 
