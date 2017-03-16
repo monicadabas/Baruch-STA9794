@@ -185,18 +185,21 @@ def get_stats(data_file,noise_indices,data_block,first_index,line_count):
 
                 else:
                     price_i_plus_1 = float(last_tick[1])
+                try:
+                    log_return = log(price_i_plus_1/price_i)
+                    n1 = n
+                    n += 1
+                    delta = log_return - m1
+                    delta_n = delta/n
+                    delta_n2 = delta_n**2
+                    term1 = delta * delta_n * n1
+                    m1 += delta_n
+                    m4 += term1*delta_n2*(n**2 - 3*n + 3) + 6*delta_n2*m2 - 4*delta_n*m3
+                    m3 += term1*delta_n*(n-2) - 3*delta_n*m2
+                    m2 += term1
+                except Exception:
+                    pass
 
-                log_return = log(price_i_plus_1/price_i)
-                n1 = n
-                n += 1
-                delta = log_return - m1
-                delta_n = delta/n
-                delta_n2 = delta_n**2
-                term1 = delta * delta_n * n1
-                m1 += delta_n
-                m4 += term1*delta_n2*(n**2 - 3*n + 3) + 6*delta_n2*m2 - 4*delta_n*m3
-                m3 += term1*delta_n*(n-2) - 3*delta_n*m2
-                m2 += term1
             lines_read += buffer_size
     t2 = datetime.now()
     time_taken = (t2-t1).total_seconds()
@@ -302,7 +305,6 @@ def main(data, noise):
         data_stats = reduce(combined_stats, block_stats_list)
 
         # calculates the stats for normal distribution for the complete data
-        no_of_returns = data_stats.n
         data_mean = data_stats.m1
         data_variance = data_stats.m2/(data_stats.n-1)
         data_std_dev = sqrt(data_variance)
@@ -315,8 +317,6 @@ def main(data, noise):
         print("Variance: {}".format(data_variance))
         print("Kurtosis: {}".format(data_kurtosis))
         print("Skewness: {}".format(data_skewness))
-        print("No of returns: {}".format(no_of_returns))
-        print("No. of noises: {}".format(len(noise_ticks)))
 
         if data_kurtosis > 3:
             print("Since kurtosis is greater than 3, returns are not log normal")
