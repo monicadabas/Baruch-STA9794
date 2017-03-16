@@ -8,6 +8,7 @@ from operator import itemgetter
 from math import log, e, sqrt
 import numpy as np
 from guppy import hpy
+# from memory_profiler import profile
 
 
 h = hpy()
@@ -47,7 +48,7 @@ class Block:
 
 
 # returns number of ticks or rows in each block (each node processes one block)
-# @ profile(stream=mf)
+# @profile(stream=mf)
 def get_line_count(fh,block):
     block_size = block.end + 1 - block.start
     count_of_characters_read = 0
@@ -68,7 +69,7 @@ def get_line_count(fh,block):
 
 
 # returns adjusted block start and end and the number of ticks in adjusted block
-# @ profile(stream=mf)
+# @profile(stream=mf)
 def adjust_blocks(fh,block,rank, nprocs):
     buffer_size = 100
     buffer = np.empty(buffer_size, dtype=str)
@@ -108,9 +109,7 @@ def adjust_blocks(fh,block,rank, nprocs):
                 block.end += i
                 break
 
-    #print("Process: {}, Adjusted block: [{}, {}]".format(rank,block.start,block.end))
     line_count = get_line_count(fh,block)
-    #print("Process: {}, Line Count: {}".format(rank,line_count))
 
     return block, line_count
 
@@ -146,7 +145,7 @@ statistics for normal distribution and returns the object of class BlockStats.
 """
 
 
-# @ profile
+# @profile(stream=mf)
 def get_stats(data_file,noise_indices,data_block,first_index,line_count):
     t1 = datetime.now()
     with open(data_file, 'r') as fh:
@@ -206,6 +205,7 @@ def get_stats(data_file,noise_indices,data_block,first_index,line_count):
 
 # this function computes the parameters required to calculate stats for normal distribution taking the
 # parameters of two blocks at a time
+# @profile(stream=mf)
 def combined_stats(a,b):
     n = a.n + b.n
     delta = b.m1 - a.m1
@@ -229,7 +229,7 @@ def combined_stats(a,b):
 # First function to be called when program starts
 # Takes two arguments- 1st is the raw data.txt file and second is the noise.txt file
 # noise.txt has the index of ticks that were identified as noise by SCRUB.py in increasing order
-# @ profile
+# @profile(stream=mf)
 def main(data, noise):
     comm = MPI.COMM_WORLD
     rank = comm.Get_rank()
@@ -253,7 +253,6 @@ def main(data, noise):
         block_end = file_size
 
     block = Block(block_start,block_end)
-    # print("Process {}: Block: [{}, {}]".format(rank,block.start,block.end))
 
     # get adjusted blocks so that a block starts at a new tick and ends at the end of a tick
     data_block, line_count = adjust_blocks(fh,block,rank, nprocs)
@@ -288,10 +287,9 @@ def main(data, noise):
         block_stats, time_taken = get_stats(data,noise_indices,data_block,first_index,line_count)
         comm.send([block_stats,time_taken],dest=0)
 
-    finish_scrubbing = datetime.now()
-
     # node with rank zero receives the stats from each block and combine them to get stats for complete data
     if rank == 0:
+        t1 = datetime.now()
         # block_stats_list stores the stats of each block, initialized with stats of block processed by rank zero
         tt = [time_taken]
         block_stats_list = [block_stats]
@@ -337,6 +335,8 @@ def main(data, noise):
         logging.info("Time Profile")
         logging.info("Time to get blocks: {}".format((got_all_blocks_index-start_time).total_seconds()))
         logging.info("Time to identify signals and compute parameters: {}".format((max(tt))))
+        logging.info("Time taken by root node to receive data from other nodes and compute normal "
+                     "distribution statistics: {}".format((all_done-t1).total_seconds()))
         logging.info("Total time taken is: {}".format((all_done-start_time).total_seconds()))
 
         logging.info("Memory profile")
