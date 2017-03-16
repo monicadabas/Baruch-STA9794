@@ -38,6 +38,7 @@ start_time = datetime.now()
 # definition of block class so store the start and end character index of a block
 # block is the part of file to be processed by a node
 
+
 class Block:
     def __init__(self, start, end):
         self.start = start
@@ -45,7 +46,7 @@ class Block:
 
 
 # returns number of ticks or rows in each block (each node processes one block)
-#@ profile(stream=mf)
+# @ profile(stream=mf)
 def get_line_count(fh,block):
     block_size = block.end + 1 - block.start
     count_of_characters_read = 0
@@ -66,7 +67,7 @@ def get_line_count(fh,block):
 
 
 # returns adjusted block start and end and the number of ticks in adjusted block
-#@ profile(stream=mf)
+# @ profile(stream=mf)
 def adjust_blocks(fh,block,rank, nprocs):
     buffer_size = 100
     buffer = np.empty(buffer_size, dtype=str)
@@ -181,7 +182,7 @@ block is object of Block class with first and last character index of the part o
 first_index is the index of the first row in the block which is its index in data.txt
 count is the number of rows in this block"""
 
-#@ profile(stream=mf)
+# @ profile(stream=mf)
 def identify_noise(file, block, first_index, count):
     with open(file, 'r') as fh:
         noise_list = []
@@ -232,7 +233,7 @@ def identify_noise(file, block, first_index, count):
                     noise_list.append(data[i].index)
                 else:
                     t = is_valid_result.timestamp
-
+    noise_list.sort()
     return noise_list
 
 
@@ -324,4 +325,5 @@ if __name__ == "__main__":
     else:
         main(sys.argv[1])
 
-#mf.close()
+# mf.close()
+
