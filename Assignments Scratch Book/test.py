@@ -117,34 +117,65 @@
 import logging
 import sys
 from memory_profiler import profile
+# import gc
+#
+# gc.set_debug(gc.DEBUG_LEAK)
+# print(sys.argv)
+# loglevel = sys.argv[1][6:]
+# from memory_profiler import profile
+# print(loglevel)
+#
+# num_level = getattr(logging, loglevel.upper())
+# if not isinstance(num_level, int):
+#     raise ValueError('Invalid log level: %s' % loglevel)
+#
+# logging.basicConfig(filename='example.log',level=num_level,filemode='w')
+#
+# logging.debug('This message should go to the log file')
+# logging.info('So should this')
+# logging.warning('And this, too')
 
+# with open("memory_logger.log", 'w') as mf:
+#     @profile(stream=mf)
+#     def a():
+#         print("Entered a")
+#         A = 6
+#         c = A**2
+#
+#     @profile(stream=mf)
+#     def b():
+#         print("Entered b")
+#
+#
+#     a()
+#     b()
+#
+# print(gc.garbage)
 
-print(sys.argv)
-loglevel = sys.argv[1][6:]
-from memory_profiler import profile
-print(loglevel)
+# s= ["00010101:00:00:00.000000", "00010101:00:01:00.000000","01010101:10:00:00.000000"]
+# # print(sorted(s, reverse=True))
+# # t = s[0].split(":")
+# # print(t[0], t[3])
+#
+# first_index = 0
+# line_count = 4
+# noise_ticks = []
+# noise_indices = list(filter(lambda x: first_index<=x< first_index+line_count,noise_ticks))
+#
+#
+# print("Length of noise_indices:{}".format(len(noise_indices)))
 
-num_level = getattr(logging, loglevel.upper())
-if not isinstance(num_level, int):
-    raise ValueError('Invalid log level: %s' % loglevel)
+a = [1,2,3,4,5]
+b = [2,4]
+c = []
 
-logging.basicConfig(filename='example.log',level=num_level,filemode='w')
+b_index = 0
+for i in a:
+    if i == b[b_index]:
+        a.remove(i)
+        if len(b)-1 > b_index:
+            b_index += 1
+    #else:
+    #    c.append(i)
 
-logging.debug('This message should go to the log file')
-logging.info('So should this')
-logging.warning('And this, too')
-
-with open("memory_logger.log", 'w') as mf:
-    @profile(stream=mf)
-    def a():
-        print("Entered a")
-        A = 6
-        c = A**2
-
-    @profile(stream=mf)
-    def b():
-        print("Entered b")
-
-
-    a()
-    b()
+print(a)
