@@ -8,12 +8,13 @@ from operator import itemgetter
 from math import log, e, sqrt
 import numpy as np
 from guppy import hpy
-from scipy.stats.mstats import normaltest
 
 
 h = hpy()
 
-start_time = datetime.now()
+# declaration of log file for memory profiling
+# mf = open("Normal_functions_memory_log.log", 'w')
+
 # declaration of log file
 
 frmt = '%(levelname)s:%(asctime)s:%(message)s'
@@ -33,6 +34,11 @@ else:
 
 logging.basicConfig(filename=fn, format=frmt, datefmt='%m/%d/%Y %I:%M:%S %p', level=num_level, filemode='w')
 
+start_time = datetime.now()
+
+# definition of block class so store the start and end character index of a block
+# block is the part of file to be processed by a node
+
 
 class Block:
     def __init__(self, start, end):
@@ -41,7 +47,7 @@ class Block:
 
 
 # returns number of ticks or rows in each block (each node processes one block)
-#@ profile(stream=mf)
+# @ profile(stream=mf)
 def get_line_count(fh,block):
     block_size = block.end + 1 - block.start
     count_of_characters_read = 0
@@ -62,7 +68,7 @@ def get_line_count(fh,block):
 
 
 # returns adjusted block start and end and the number of ticks in adjusted block
-#@ profile(stream=mf)
+# @ profile(stream=mf)
 def adjust_blocks(fh,block,rank, nprocs):
     buffer_size = 100
     buffer = np.empty(buffer_size, dtype=str)
@@ -109,6 +115,7 @@ def adjust_blocks(fh,block,rank, nprocs):
     return block, line_count
 
 
+# class definition for statistics to define a normal distribution
 class StatsOfNormalDist:
     def __init__(self, mean_, std_dev, variance_, skewness_, kurtosis_, elements_):
         self.mean_ = mean_
@@ -119,104 +126,71 @@ class StatsOfNormalDist:
         self.elements_ = elements_
 
 
-# def get_stats(data_file,noise_indices,data_block,first_index,line_count):
-#     with open(data_file, 'r') as fh:
-#         fh.seek(data_block.start)
-#         lines_read = 0
-#         current_index_data_file = first_index
-#         current_index_noise_indices = 0
-#         block_mean = 0
-#         block_variance = 0
-#         #signal_count = 0
-#
-#         while lines_read < line_count:
-#             buffer_size = min(1000,line_count-lines_read)
-#             buff = islice(fh,buffer_size)
-#             time_price_linecount = []
-#             ticks = []
-#             for tick in buff:
-#                 lines_read += 1
-#                 # print("current_index_data_file:{}".format(current_index_data_file))
-#                 # print("current_index_noise_indices: {}".format(current_index_noise_indices))
-#                 # print("noise_indices[current_index_noise_indices]: {}".format(noise_indices[current_index_noise_indices]))
-#                 if current_index_data_file == noise_indices[current_index_noise_indices]:
-#                     current_index_noise_indices += 1
-#                 else:
-#                     ticks.append(tick)
-#                 #signal_count += 1
-#                 current_index_data_file += 1
-#                 signal = ticks[-1].split(",")
-#                 signal.append(lines_read-current_index_noise_indices-1)
-#                 time_price_linecount.append(signal)
-#
-#             time_price_linecount = sorted(time_price_linecount, key=itemgetter(0))
-#             last_tick = time_price_linecount[-1]
-#             if lines_read == 0:
-#                 start_index = 1
-#             else:
-#                 start_index = 0
-#
-#             for i in range(start_index, len(time_price_linecount)):
-#                 price_i = float(time_price_linecount[i][1])
-#
-#                 if start_index == 1:
-#                     price_i_plus_1 = float(time_price_linecount[i-1][1])
-#
-#                 else:
-#                     price_i_plus_1 = float(last_tick[1])
-#
-#                 try:
-#                     log_return = log(price_i_plus_1/price_i,e)
-#                     last_mean = block_mean
-#                     block_mean = last_mean + (log_return-last_mean)/(time_price_linecount[i][3])
-#                     block_variance += (log_return-last_mean)*(log_return-block_mean)
-#                     block_variance /= (line_count - len(noise_indices)-1)
-#                 except Exception:
-#                     pass
-#
-#         block_std_dev = sqrt(block_variance)
-#
-#         return StatsOfNormalDist(block_mean,block_std_dev,block_variance)
+# class definition for parameters required to get normal distribution statistics
+class BlockStats:
+    def __init__(self, n, m1, m2, m3, m4):
+        self.n = n
+        self.m1 = m1
+        self.m2 = m2
+        self.m3 = m3
+        self.m4 = m4
 
 
+"""
+This function is processed by each node. It takes in the data block, noise.txt for the concerned block
+along with other parameters like data_block (object of class Block which has block start and end),
+first_index which is the index of first tick in block as its index in data.txt, line_count is the number of ticks
+in the block.
+Function processes a block in chunks, identify the signal ticks, computes the parameters required to calculate
+statistics for normal distribution and returns the object of class BlockStats.
+"""
+
+
+# @ profile
 def get_stats(data_file,noise_indices,data_block,first_index,line_count):
-    n, m1, m2, m3, m4 = 0, 0, 0, 0, 0
-    len_noise = len(noise_indices)
+    t1 = datetime.now()
     with open(data_file, 'r') as fh:
         fh.seek(data_block.start)
-        lines_read = 0
-        current_index_data_file = first_index
-        current_index_noise_indices = 0
+        lines_read = 0  # number of ticks read
+        len_noise = len(noise_indices)  # number of noise ticks in this block
+        current_index_data_file = first_index  # index of the current tick in block
+        current_index_noise_indices = 0  # index of current noise tick
+        n, m1, m2, m3, m4 = 0, 0, 0, 0, 0  # parameters to get stats for normal distribution
 
-        while lines_read < line_count:
+        while lines_read < line_count:  # this loop goes till all the ticks in block are read
             buffer_size = min(1000,line_count-lines_read)
             buff = islice(fh,buffer_size)
-            signal_ticks = []
-            last_tick = None
-            for i in range(buffer_size):
-                tick_index = lines_read + first_index + i
-                if tick_index != noise_indices[current_index_noise_indices]:
-                    signal = buff[i].split(",")
-                    signal_ticks.append([signal[0], signal[1]])
-                else:
-                    if current_index_noise_indices + 1 < len_noise:
+            time_price = []  # list to store time and price of signal ticks in one chunk
+            for tick in buff:
+                if current_index_data_file == int(noise_indices[current_index_noise_indices]):
+                    if len_noise - 1 > current_index_noise_indices:
                         current_index_noise_indices += 1
+                    current_index_data_file += 1
                     continue
-            signal_ticks = sorted(signal_ticks, key=itemgetter(0))
-            len_signal_ticks = len(signal_ticks)
-            if last_tick is None:
-                start = 1
-            else:
-                start = 0
-            returns = [] # percentage log returns
-            for i in range(start, len_signal_ticks):
-                log_return = log(signal_ticks[i][1]/signal_ticks[i-1][1], e)
-                returns.append(log_return)
+                else:
+                    current_index_data_file += 1
+                    signal = tick.split(",")
+                    time_price.append(signal)
 
-            for i in returns:
+            time_price = sorted(time_price, key=itemgetter(0))
+            last_tick = time_price[-1]
+            if lines_read == 0:
+                start_index = 1
+            else:
+                start_index = 0
+            for i in range(start_index, len(time_price)):
+                price_i = float(time_price[i][1])
+
+                if start_index == 1:
+                    price_i_plus_1 = float(time_price[i-1][1])
+
+                else:
+                    price_i_plus_1 = float(last_tick[1])
+
+                log_return = log(price_i_plus_1/price_i)
                 n1 = n
                 n += 1
-                delta = i - m1
+                delta = log_return - m1
                 delta_n = delta/n
                 delta_n2 = delta_n**2
                 term1 = delta * delta_n * n1
@@ -224,21 +198,38 @@ def get_stats(data_file,noise_indices,data_block,first_index,line_count):
                 m4 += term1*delta_n2*(n**2 - 3*n + 3) + 6*delta_n2*m2 - 4*delta_n*m3
                 m3 += term1*delta_n*(n-2) - 3*delta_n*m2
                 m2 += term1
+            lines_read += buffer_size
+    t2 = datetime.now()
+    time_taken = (t2-t1).total_seconds()
+    return BlockStats(n,m1,m2,m3,m4),time_taken
 
-    no_of_returns = n
-    block_mean = m1
-    block_variance = m2/(n-1)
-    block_std_dev = sqrt(block_variance)
-    block_skewness = sqrt(n)*m3/m2*sqrt(m2)
-    block_kurtosis = n*m4/m2**2 - 3
 
-    return StatsOfNormalDist(block_mean,block_std_dev,block_variance,block_skewness,block_kurtosis,no_of_returns)
+# this function computes the parameters required to calculate stats for normal distribution taking the
+# parameters of two blocks at a time
+def combined_stats(a,b):
+    n = a.n + b.n
+    delta = b.m1 - a.m1
+    delta2 = delta**2
+    delta3 = delta*delta2
+    delta4 = delta2**2
+
+    m1 = (a.n*a.m1 + b.n*b.m1) / n
+
+    m2 = a.m2 + b.m2 + delta2 * a.n * b.n / n
+
+    m3 = a.m3 + b.m3 + delta3 * a.n * b.n * (a.n - b.n)/(n**2)
+    m3 += 3.0*delta * (a.n*b.m2 - b.n*a.m2)/n
+
+    m4 = a.m4 + b.m4 + delta4*a.n*b.n * (a.n**2 - a.n*b.n + b.n**2) /n**3
+    m4 += 6.0*delta2 * (a.n**2*b.m2 + b.n**2*a.m2)/(n**2) + 4.0*delta*(a.n*b.m3 - b.n*a.m3) / n
+
+    return BlockStats(n,m1,m2,m3,m4)
 
 
 # First function to be called when program starts
 # Takes two arguments- 1st is the raw data.txt file and second is the noise.txt file
 # noise.txt has the index of ticks that were identified as noise by SCRUB.py in increasing order
-#@ profile
+# @ profile
 def main(data, noise):
     comm = MPI.COMM_WORLD
     rank = comm.Get_rank()
@@ -262,7 +253,7 @@ def main(data, noise):
         block_end = file_size
 
     block = Block(block_start,block_end)
-    #print("Process {}: Block: [{}, {}]".format(rank,block.start,block.end))
+    # print("Process {}: Block: [{}, {}]".format(rank,block.start,block.end))
 
     # get adjusted blocks so that a block starts at a new tick and ends at the end of a tick
     data_block, line_count = adjust_blocks(fh,block,rank, nprocs)
@@ -273,19 +264,20 @@ def main(data, noise):
 
     got_all_blocks_index = datetime.now()
 
-     # process each block
+    # process each block
 
     """if rank is zero the index of first tick is zero else
     index of first tick is the sum of line_count of processes with rank less than the node's rank.
-    Once each node has the index of the first tick in its block, further processing starts
-    Each node sends the list of noise to root node (0). Root node receives all noises and writes them into
-    noise.txt"""
+    Noise file is also divided for each block to contain the indices of noises only in that block.
+    Once each node has the index of the first tick in its block, and its noise indices list, further processing starts
+    Each node sends the stats parameters to root node (0). Root node receives all stats and combine them to get
+    normal distribution stats for the complete data"""
 
     first_index = 0  # index of the first tick in block
 
     if rank == 0:
         noise_indices = list(filter(lambda x: first_index<=int(x)< first_index+line_count,noise_ticks))
-        normal_stats = get_stats(data,noise_indices,data_block,first_index,line_count)
+        block_stats, time_taken = get_stats(data,noise_indices,data_block,first_index,line_count)
 
     else:
         for i in range(rank):
@@ -293,47 +285,64 @@ def main(data, noise):
 
         noise_indices = list(filter(lambda x: first_index<=int(x)< first_index+line_count,noise_ticks))
 
-        normal_stats = get_stats(data,noise_indices,data_block,first_index,line_count)
-        comm.send([normal_stats,line_count-len(noise_indices)],dest=0)
-
+        block_stats, time_taken = get_stats(data,noise_indices,data_block,first_index,line_count)
+        comm.send([block_stats,time_taken],dest=0)
 
     finish_scrubbing = datetime.now()
 
+    # node with rank zero receives the stats from each block and combine them to get stats for complete data
     if rank == 0:
-        means = [round(normal_stats.mean_,3)]
-        std_deviations = [round(normal_stats.std_dev*100,3)]
-        variances = [round(normal_stats.variance_*10000,3)]
-        kurtosis_s = [round(normal_stats.kurtosis_*10000,3)]
-        no_of_returns = [round(normal_stats.elements_*10000,3)]
-        no_of_signals = [line_count-len(noise_indices)]
+        # block_stats_list stores the stats of each block, initialized with stats of block processed by rank zero
+        tt = [time_taken]
+        block_stats_list = [block_stats]
         for i in range(1, nprocs):
-            stats, count = comm.recv(source=i)
-            means.append(round(stats.mean_,3))
-            std_deviations.append(round(stats.std_dev*100,3))
-            variances.append(round(stats.variance_*10000,3))
-            kurtosis_s.append(round(stats.kurtosis_*10000,3))
-            no_of_returns.append(round(stats.elements_*10000,3))
-            no_of_signals.append(count)
+            block_stats2, time_taken = comm.recv(source=i)
+            tt.append(time_taken)
+            block_stats_list.append(block_stats2)
 
-        print("Means: {}".format(means))
-        print("Standard Deviations: {}".format(std_deviations))
-        print("Variances: {}".format(variances))
-        print("Kurtosis: {}".format(kurtosis_s))
+        # combines the stats of each block using defined function
+        data_stats = reduce(combined_stats, block_stats_list)
+
+        # calculates the stats for normal distribution for the complete data
+        no_of_returns = data_stats.n
+        data_mean = data_stats.m1
+        data_variance = data_stats.m2/(data_stats.n-1)
+        data_std_dev = sqrt(data_variance)
+        data_skewness = sqrt(data_stats.n)*data_stats.m3/data_stats.m2**1.5
+        data_kurtosis = data_stats.n*data_stats.m4/data_stats.m2**2
+
+        # prints the normal distribution stats for data
+        print("Mean: {}".format(data_mean))
+        print("Standard Deviation: {}".format(data_std_dev))
+        print("Variance: {}".format(data_variance))
+        print("Kurtosis: {}".format(data_kurtosis))
+        print("Skewness: {}".format(data_skewness))
         print("No of returns: {}".format(no_of_returns))
-        print("Signal Count: {}".format(no_of_signals))
+        print("No. of noises: {}".format(len(noise_ticks)))
 
-        #print(normaltest(means))
+        if data_kurtosis > 3:
+            print("Since kurtosis is greater than 3, returns are not log normal")
+
+        elif -1 > data_skewness > 1:
+            print("Log Returns are highly skewed, hence not log normal")
+
+        elif 0.5 < abs(data_skewness) <= 1:
+            print("Log Returns are moderately skewed, hence not log normal")
+
+        else:
+            print("Returns are log normal")
 
         all_done = datetime.now()
 
         logging.info("Time Profile")
         logging.info("Time to get blocks: {}".format((got_all_blocks_index-start_time).total_seconds()))
-        logging.info("Time to scrub: {}".format((finish_scrubbing-got_all_blocks_index).total_seconds()))
-        #logging.info("Time taken to write noise.txt: {}".format((finish_writing_noise-start_writing_noise).total_seconds()))
+        logging.info("Time to identify signals and compute parameters: {}".format((max(tt))))
         logging.info("Total time taken is: {}".format((all_done-start_time).total_seconds()))
 
         logging.info("Memory profile")
         logging.info(h.heap())
+
+    MPI.Finalize()
 
 
 # Point of entry
@@ -344,3 +353,5 @@ if __name__ == "__main__":
         sys.exit(0)
     else:
         main(sys.argv[1],sys.argv[2])
+
+# mf.close()
