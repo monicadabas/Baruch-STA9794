@@ -151,8 +151,10 @@ from memory_profiler import profile
 #     b()
 #
 # print(gc.garbage)
-
-# s= ["00010101:00:00:00.000000", "00010101:00:01:00.000000","01010101:10:00:00.000000"]
+import datetime
+import pandas as pd
+import re
+s= ["00010101:00:00:00.000000", "00010101:00:01:00.000000","01010101:10:00:00.000000"]
 # # print(sorted(s, reverse=True))
 # # t = s[0].split(":")
 # # print(t[0], t[3])
@@ -165,17 +167,24 @@ from memory_profiler import profile
 #
 # print("Length of noise_indices:{}".format(len(noise_indices)))
 
-a = [1,2,3,4,5]
-b = [2,4]
-c = []
 
-b_index = 0
-for i in a:
-    if i == b[b_index]:
-        a.remove(i)
-        if len(b)-1 > b_index:
-            b_index += 1
-    #else:
-    #    c.append(i)
+def date_parse(s):
+    if type(s) == datetime.datetime:
+        return s
+    try:
+        return pd.datetime.strptime(s, '%Y%m%d:%H:%M:%S.%f')
+    except ValueError:
+        return "Error"
 
-print(a)
+# s[0] = date_parse(s[0])
+# if type(s[0]) == datetime.datetime:
+#     print(1)
+# else:
+#     print(0)
+
+pattern = re.compile(r'\d{8}:\d{2}:\d{2}:\d{2}.\d{6}')
+result = pattern.match(s[1])
+if result:
+    print(1)
+else:
+    print(0)
