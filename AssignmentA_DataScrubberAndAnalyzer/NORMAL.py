@@ -318,17 +318,11 @@ def main(data, noise):
         print("Kurtosis: {}".format(data_kurtosis))
         print("Skewness: {}".format(data_skewness))
 
-        if data_kurtosis > 3:
-            print("Since kurtosis is greater than 3, returns are not log normal")
-
-        elif -1 > data_skewness > 1:
-            print("Log Returns are highly skewed, hence not log normal")
-
-        elif 0.5 < abs(data_skewness) <= 1:
-            print("Log Returns are moderately skewed, hence not log normal")
+        if data_kurtosis < 3 and 0 <= abs(data_skewness) <= 0.5:
+            print("Returns are log normal")
 
         else:
-            print("Returns are log normal")
+            print("Returns are NOT log normal")
 
         all_done = datetime.now()
 
