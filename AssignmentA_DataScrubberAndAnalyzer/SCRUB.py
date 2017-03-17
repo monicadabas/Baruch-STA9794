@@ -46,7 +46,7 @@ class Block:
 
 
 # returns number of ticks or rows in each block (each node processes one block)
-# @profile(stream=mf)
+# @ profile(stream=mf)
 def get_line_count(fh,block):
     block_size = block.end + 1 - block.start
     count_of_characters_read = 0
@@ -67,7 +67,7 @@ def get_line_count(fh,block):
 
 
 # returns adjusted block start and end and the number of ticks in adjusted block
-# @profile(stream=mf)
+# @ profile(stream=mf)
 def adjust_blocks(fh,block,rank, nprocs):
     buffer_size = 100
     buffer = np.empty(buffer_size, dtype=str)
@@ -133,7 +133,7 @@ class Ticks:
 
 # checks if the row tick has all values and in right format. If not returns False and raw tick,
 # else returns True and raw tick converted to a list of formatted attributes
-# @profile(stream=mf)
+#@ profile(stream=mf)
 def check_format(tick):
     line = tick.split(",")
     if len(line) != 3:
@@ -180,8 +180,7 @@ block is object of Block class with first and last character index of the part o
 first_index is the index of the first row in the block which is its index in data.txt
 count is the number of rows in this block"""
 
-
-# @profile(stream=mf)
+# @ profile(stream=mf)
 def identify_noise(file, block, first_index, count):
     with open(file, 'r') as fh:
         noise_list = []
@@ -237,7 +236,7 @@ def identify_noise(file, block, first_index, count):
 
 
 # First function to be called when program starts
-# @profile(stream=mf)
+#@ profile(stream=mf)
 def main(argv):
     comm = MPI.COMM_WORLD
     rank = comm.Get_rank()
@@ -258,6 +257,7 @@ def main(argv):
         block_end = file_size
 
     block = Block(block_start,block_end)
+    #print("Process {}: Block: [{}, {}]".format(rank,block.start,block.end))
 
     # get adjusted blocks so that a block starts at a new tick and ends at the end of a tick
     block, line_count = adjust_blocks(fh,block,rank, nprocs)
