@@ -1,0 +1,19 @@
+INFO:04/09/2017 10:30:01 PM:Time Profile
+INFO:04/09/2017 10:30:01 PM:Time to get blocks: 0.213254
+INFO:04/09/2017 10:30:01 PM:Time to identify signals and compute parameters: 0.121936
+INFO:04/09/2017 10:30:01 PM:Time taken by root node to receive data from other nodes and compute normal distribution statistics: 0.001264
+INFO:04/09/2017 10:30:01 PM:Total time taken is: 0.335727
+INFO:04/09/2017 10:30:01 PM:Memory profile
+INFO:04/09/2017 10:30:02 PM:Partition of a set of 63304 objects. Total size = 9968584 bytes.
+ Index  Count   %     Size   % Cumulative  % Kind (class / dict of class)
+     0  26634  42  3587960  36   3587960  36 str
+     1  15572  25  1361600  14   4949560  50 tuple
+     2    204   0   795936   8   5745496  58 dict of module
+     3    450   1   560688   6   6306184  63 dict of type
+     4   4116   7   526848   5   6833032  69 types.CodeType
+     5   3950   6   474000   5   7307032  73 function
+     6     94   0   445784   4   7752816  78 unicode
+     7    401   1   405272   4   8158088  82 dict (no owner)
+     8    450   1   400776   4   8558864  86 type
+     9   2287   4   182960   2   8741824  88 __builtin__.wrapper_descriptor
+<230 more rows. Type e.g. '_.more' to view.>

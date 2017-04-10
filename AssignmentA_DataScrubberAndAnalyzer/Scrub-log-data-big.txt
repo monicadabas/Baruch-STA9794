@@ -1,0 +1,19 @@
+INFO:04/09/2017 10:37:40 PM:Time Profile
+INFO:04/09/2017 10:37:40 PM:Time to get blocks: 37.761009
+INFO:04/09/2017 10:37:40 PM:Time to scrub: 277.25089
+INFO:04/09/2017 10:37:40 PM:Time taken to write noise.txt: 37.267549
+INFO:04/09/2017 10:37:40 PM:Total time taken is: 352.279467
+INFO:04/09/2017 10:37:40 PM:Memory profile
+INFO:04/09/2017 10:37:41 PM:Partition of a set of 298011 objects. Total size = 39949768 bytes.
+ Index  Count   %     Size   % Cumulative  % Kind (class / dict of class)
+     0 131327  44 13743152  34  13743152  34 str
+     1  70576  24  6279592  16  20022744  50 tuple
+     2  18367   6  2350976   6  22373720  56 types.CodeType
+     3  18746   6  2249520   6  24623240  62 function
+     4    631   0  2179624   5  26802864  67 dict of module
+     5   1767   1  1858728   5  28661592  72 dict of type
+     6   5679   2  1790416   4  30452008  76 unicode
+     7   1768   1  1594944   4  32046952  80 type
+     8   1396   0  1562848   4  33609800  84 dict (no owner)
+     9   3655   1   860280   2  34470080  86 list
+<672 more rows. Type e.g. '_.more' to view.>
