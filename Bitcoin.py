@@ -1,10 +1,10 @@
 from __future__ import division
 import datetime
 
-# Q1. When will all the bitcoins be mined
+# When will all the bitcoins be mined
 
 
-def Q1():
+def timeline():
     total = 0 # number of bitcoins mined
     n = 0 # number of times reward is halved
     bitcoins = 21*(10**6) # total bitcoins to be mined
@@ -33,7 +33,7 @@ def Q1():
     print("All bitcoins will be mined by {}".format(t))
     print("All bitcoins will be mined by year {}.".format(t.year))
 
-Q1()
+timeline()
 
 # Output
 # All bitcoins will be mined by 2140-10-08 18:15:05
