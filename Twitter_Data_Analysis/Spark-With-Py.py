@@ -656,7 +656,7 @@ number of command line arguments
 3
 command line arguments printed
 
-['/Users/monicadabas/Desktop/MSCourseWork/Spring2017/Big_Data-STA9497/Project2/read_data_test.py', 'TwitterData', '240]
+['read_data_test.py', 'TwitterData', '240]
 
 """
 
