@@ -1,0 +1,89 @@
+Facts about the data:
+
+1. Each row has 3 datapoints: Timestamp, Price, Units Traded
+2. Timestamp is in format YYYYMMDD:HH:MM:SS.SSSSSS (seconds as float to capture microsecond)
+3. Price is float
+4. Units Traded is integer
+5. Price and Units can be zero or negative
+6. Timestamps:  -can be duplicate
+				-not in order
+				-difference between two consecutive timestamps can be as large as possible
+7. Data is a stream of network data packets
+8. Prices and Units can increase significantly so should not be taken as noise outright, instead should be first checked for any reason for the spike
+
+Facts about network latency:
+
+1. Network latency is in milliseconds
+2. Latency should not exceed more than 2-3 seconds considering the packet travels the largest distance
+
+Check points:
+
+1. All three items in a row should be in right format
+2. The Price and Units Traded should not be zero or negative and should be within 2 standard deviations from mean
+3. Rows with duplicate timestamps should be removed as those are unreliable and we have no mechanism to check which one is real data
+4. Two consecutive rows should have timestamps within 3 seconds range
+
+Process:
+SCRUB: Parallel
+Sequential Step 1: 3 Steps will run in parallel in this step
+    Step 1: Divide file into nominal blocks
+    Step 2: Adjust block start and end to get the final blocks to be processed by each node
+    Step 3: Get the count of lines in each block
+    Step 4: Broadcast count/ once each block gets the line count they should send it to root node
+
+Sequential Step 2: Once each node provides the line count, root node will calculate the index of first tick in each block
+
+Sequential Step 3: Root node will send the index to each node and then they will start further processing
+
+Sequential Step 4: Information with each node: Block start and end, file, index of the first row in block
+Each node processes their block as follows
+    Step 1: Parse data in chunks of size 10000 (about 200 rows) and create objects of class Ticks with 3 features as in file and index
+    Step 2: For each chunk check the format. If incorrect format, write index to noise
+    Step 3: Check for network latency, relative price and unit using standard deviation (price and unit should be within 2 std deviations)
+    Step 4: The ticks that get past all checks will be signals so sort them in order of timestamp and add them to signal
+
+
+NORMAL: Parallel
+Test for log normality of returns: kurtosis <= 3, skewness
+If skewness is less than -1 or greater than 1, the distribution is highly skewed.
+If skewness is between -1 and -0.5 or between 0.5 and 1, the distribution is moderately skewed.
+If skewness is between -0.5 and 0.5, the distribution is approximately symmetric.
+
+Also output mean, standard deviation as stats of the data.
+
+Step 1: Divide data in blocks and get the index of first row in each block (as done in scrub.py)
+Step 2: Divide the sorted noise file and give it as a list of indexes to each block for further processing with rows from that block only
+Step 3: Read each block iteratively in chunks (as done in scrub.py) disregarding the rows in noise
+Step 4: Compute log return for each signal row starting from 2nd row to the last row in block. Since each block will work independently, each block will have one row for which return cannot be computed as it wont have the last price. With this we will loose 2*number of nodes data points which will be significantly less than the complete data so wont make any difference.
+Step 5: Compute statistics of a normal distribution for each block. Assuming returns to be log normal, the log returns should follow rules of normal distribution.
+Step 6: Each node sends its computed stats to root node.
+Step 7: Once root node has stats of each block, it combines them to get the stats of complete dataset.
+Step 8: Root node applies the limit rules on kutosis and skewness mentioned above and provides normality result.
+
+
+LOGGING:https://docs.python.org/3/howto/logging.html
+Python logging levels from least to highest in terms of logging information
+
+Level	Numeric value
+CRITICAL	50
+ERROR	    40
+WARNING	    30
+INFO	    20
+DEBUG	    10
+NOTSET	    0
+
+Default logging level given by me: Error
+To change logging level define it via command line: mpirun -n 5 python SCRUB.py data.txt --log=<logging level>
+If incorrect logging level provided, program stops execution and prints out that it received incorrect logging level
+Currently logs:
+times and memory heap in info mode
+tick index of noise and reason for tick to be noise in debug mode
+
+
+Memory Profiling:
+Since memory profiling is not done continuously, my code does not produce line-by-line profiling of any specific function everytime it runs. However, it has the required code commented in case it is required.
+Also, it slows down the program execution time as it gathers the objects and other information required for profiling.
+My code logs the line-by-line memory profiling of functions in a log file created only for memory profiling.
+Hence, my production code does not do detailed profiling but heap profiling logged into the program's log file.
+This is the same log file in which all the other logging takes place.
+
